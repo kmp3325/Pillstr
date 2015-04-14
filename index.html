@@ -8,14 +8,38 @@
     <script src="https://code.angularjs.org/1.3.9/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.3.9/angular-route.min.js"></script>
     <script src="https://code.angularjs.org/1.3.9/angular-resource.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<h1>Pillstr</h1>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;"></span>
+            <a class="navbar-brand" href="#" style="padding-left:5px;">Pillstr</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#hamburger">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="glyphicon glyphicon-option-vertical"></span>
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+            </button>
+        </div>
 
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right" id="hamburger">
+            <ul class="nav navbar-nav">
+                <li><a href="#" data-toggle="collapse" data-target="#hamburger">Home</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#hamburger">Settings</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#hamburger">Sign Out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div ng-view></div>
 
 </body>
