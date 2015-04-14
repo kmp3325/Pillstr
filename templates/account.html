@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="leftSide">
+    <form  novalidate class="simple-form">
+       Name: <input type="text" ng-model="user.name" placeholder="Enter Name Here"/><br /><br />
+       Email: <input type="text" ng-model="user.email" placeholder="Enter Email Here" /><br /><br />
+       Password: <input type="password" ng-model="user.password" placeholder="Enter Password Here" /><br /><br />
+
+    </form>
+</div>
+<div >
+    <input id="createAcct" type="button" ng-click="createAcct()" value="Create Account" />
+</div>
+</body>
+</html>

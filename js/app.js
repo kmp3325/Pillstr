@@ -13,6 +13,10 @@ app.config(['$routeProvider',
                 templateUrl: 'templates/login.html',
                 controller: 'loginController'
             }).
+            when('/account', {
+                templateUrl: 'templates/account.html',
+                controller: 'accountController'
+            }).
             when('/home', {
                 templateUrl: 'templates/home.html',
                 controller: 'homeController'
@@ -32,8 +36,17 @@ app.config(['$routeProvider',
 
 
 //Login controller
-app.controller("loginController", function($scope){
+app.controller("loginController", function($scope, $location){
+$scope.createAcct = function(){
+    $location.path('/account');
+}
+});
 
+//Create Account controller
+app.controller("accountController", function($scope, $location){
+    $scope.createAcct = function(){
+        $location.path('/home');
+    }
 });
 
 //Home controller

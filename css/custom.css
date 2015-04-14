@@ -11,3 +11,8 @@
     font-weight: bold;
     height: 30px;
 }
+
+#leftSide{
+    text-align: left;
+    margin-left: 42%;
+}
