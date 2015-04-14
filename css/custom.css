@@ -1,0 +1,13 @@
+#login{
+    text-align: center;
+}
+
+#createAcct{
+    position: relative;
+    bottom: -150px;
+    text-align: center;
+    width: 100%;
+    color: green;
+    font-weight: bold;
+    height: 30px;
+}

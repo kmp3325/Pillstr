@@ -5,12 +5,18 @@
     <title></title>
 </head>
 <body>
-<h3>Login </h3>
-<form novalidate class="simple-form">
-    <input type="text" ng-model="user.name" /><br />
-    <input type="email" ng-model="user.email" /><br />
+<div id="login">
+    <form novalidate class="simple-form">
+        <input type="text" ng-model="user.email" placeholder="Email"/><br /><br />
+        <input type="password" ng-model="user.password" placeholder="Password" /><br /><br />
 
-    <input type="button" ng-click="reset()" value="Sign In" />
-</form>
+        <input type="button" ng-click="reset()" value="Sign In" />
+    </form>
+</div>
+
+<div >
+    <input id="createAcct" type="button" ng-click="createAcct()" value="Create Account" />
+</div>
+
 </body>
 </html>
