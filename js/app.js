@@ -5,10 +5,6 @@ var app = angular.module("pillstrApp", ['ngRoute']);
 app.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            /*when('/', {
-                templateUrl: 'index.html',
-                controller: 'indexController'
-            }).*/
             when('/login', {
                 templateUrl: 'templates/login.html',
                 controller: 'loginController'
@@ -36,16 +32,64 @@ app.config(['$routeProvider',
 
 
 //Login controller
-app.controller("loginController", function($scope, $location){
-$scope.createAcct = function(){
-    $location.path('/account');
-}
+app.controller("loginController", function($scope, $location, $http){
+
+    $scope.login = function(){
+
+        var request={
+            email : $scope.email,
+            password : $scope.password
+        };
+        console.log(request);
+
+        $http.post('/login', request).
+            success(function(data) {
+                $scope.response = data;
+                $scope.response = true;
+
+                if($scope.response == true){
+
+                    $location.path('/home');
+                }
+            }).
+            error(function(data) {
+                console.log("Error occurred in login.");
+                console.log(data);
+
+                $scope.state = false;
+                $scope.email = "";
+                $scope.password = "";
+            });
+    }
+
+    $scope.createAcct = function(){
+        $location.path('/account');
+    }
 });
 
 //Create Account controller
-app.controller("accountController", function($scope, $location){
-    $scope.createAcct = function(){
-        $location.path('/home');
+app.controller("accountController", function($scope, $location, $http){
+    $scope.createNewAcct = function(){
+        var request={
+            name : $scope.namE,
+            email : $scope.email,
+            password : $scope.password
+        };
+        console.log(request);
+
+        $http.post('/account', request).
+            success(function(data) {
+                $scope.response = data;
+                $scope.response = true;
+
+                if($scope.response == true){
+                    $location.path('/home');
+                }
+            }).
+            error(function(data) {
+                console.log("Error occurred in creating new account.");
+                console.log(data);
+            });
     }
 });
 

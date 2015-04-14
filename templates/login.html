@@ -7,10 +7,11 @@
 <body>
 <div id="login">
     <form novalidate class="simple-form">
-        <input type="text" ng-model="user.email" placeholder="Email"/><br /><br />
-        <input type="password" ng-model="user.password" placeholder="Password" /><br /><br />
+        <input type="text" ng-model="email" placeholder="Email"/><br /><br />
+        <input type="password" ng-model="password" placeholder="Password" /><br /><br />
 
         <input type="button" ng-click="login()" value="Sign In" />
+        <h4 id = "error" ng-if='state == false'>*Login Error. Please re-enter the correct email and password.</h4>
     </form>
 </div>
 
