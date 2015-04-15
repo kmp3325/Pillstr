@@ -34,6 +34,7 @@ app.config(['$routeProvider',
 //Login controller
 app.controller("loginController", function($scope, $location, $http){
 
+    sessionStorage.setItem('auth', false);
     $scope.login = function(){
 
         var request={
@@ -69,6 +70,8 @@ app.controller("loginController", function($scope, $location, $http){
 
 //Create Account controller
 app.controller("accountController", function($scope, $location, $http){
+    sessionStorage.setItem('contrl', "accountController");
+    sessionStorage.setItem('auth', false);
     $scope.createNewAcct = function(){
         var request={
             name : $scope.namE,
@@ -85,6 +88,7 @@ app.controller("accountController", function($scope, $location, $http){
                 if($scope.response == true){
                     $location.path('/home');
                 }
+                sessionStorage.setItem('auth', true);
             }).
             error(function(data) {
                 console.log("Error occurred in creating new account.");
@@ -95,16 +99,17 @@ app.controller("accountController", function($scope, $location, $http){
 
 //Home controller
 app.controller("homeController", function($scope){
-
+    sessionStorage.setItem('contrl', "homeController");
+    sessionStorage.setItem('auth', true);
 });
 
 //Prescription controller
 app.controller("prescriptionController", function($scope){
-
+    sessionStorage.setItem('auth', true);
 });
 
 //Settings controller
 app.controller("settingController", function($scope){
-
+    sessionStorage.setItem('auth', true);
 });
 
