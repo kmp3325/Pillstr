@@ -44,4 +44,10 @@ public class RemindersResource {
         return remindersDAO.insert(prescriptionId, day, hour, minute, dosage);
     }
 
+    @GET
+    @Path("/-/by-prescriptionId/{prescriptionId}")
+    public List<Reminder> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
+        return remindersDAO.getByPrescriptionId(prescriptionId);
+    }
+
 }

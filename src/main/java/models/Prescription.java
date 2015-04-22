@@ -28,6 +28,7 @@ public class Prescription {
         this.userId = userId;
         this.displayName = displayName;
         this.quantity = quantity;
+        this.notes = notes;
     }
 
     public int getId() {

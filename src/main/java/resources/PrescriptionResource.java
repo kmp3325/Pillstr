@@ -44,4 +44,10 @@ public class PrescriptionResource {
         return prescriptionDAO.insert(name, userId, displayName, quantity, notes);
     }
 
+    @GET
+    @Path("/-/by-userId/{userId}")
+    public List<Prescription> getByUserId(@PathParam("userId") int userId) {
+        return prescriptionDAO.getByUserId(userId);
+    }
+
 }
