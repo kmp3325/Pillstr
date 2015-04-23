@@ -106,6 +106,102 @@ app.controller("homeController", function($scope){
 //Prescription controller
 app.controller("prescriptionController", function($scope){
     sessionStorage.setItem('auth', true);
+
+    $scope.prescriptions = [
+        {
+            "id": 0,
+            "name": "Slovak Republic",
+            "userId": 7,
+            "displayName": "Palau",
+            "quantity": 6.2,
+            "notes": "Lorem nostrud tempor sunt sint ea cillum culpa enim culpa excepteur."
+        },
+        {
+            "id": 1,
+            "name": "Netherlands",
+            "userId": 7,
+            "displayName": "Tennessee",
+            "quantity": 3.3,
+            "notes": "Cupidatat amet reprehenderit esse culpa eiusmod dolore veniam."
+        },
+        {
+            "id": 2,
+            "name": "Togo",
+            "userId": 10,
+            "displayName": "Massachusetts",
+            "quantity": 6.2,
+            "notes": "Fugiat amet irure adipisicing do cupidatat nostrud cupidatat mollit duis enim id do deserunt."
+        },
+        {
+            "id": 3,
+            "name": "Myanmar",
+            "userId": 2,
+            "displayName": "Delaware",
+            "quantity": 9.7,
+            "notes": "Eu qui est minim proident non qui."
+        },
+        {
+            "id": 4,
+            "name": "Fiji",
+            "userId": 8,
+            "displayName": "Nebraska",
+            "quantity": 3.6,
+            "notes": "Nisi excepteur deserunt magna velit enim exercitation consectetur fugiat deserunt amet aute."
+        },
+        {
+            "id": 5,
+            "name": "Canada",
+            "userId": 6,
+            "displayName": "Utah",
+            "quantity": 0.5,
+            "notes": "Proident sit veniam eu laboris veniam ut adipisicing."
+        }
+    ];
+
+    $scope.days = [
+        {
+            name: 'Sunday',
+            display: 'Su',
+            val: 0,
+            checked: false
+        },
+        {
+            name: 'Monday',
+            display: 'Mo',
+            val: 1,
+            checked: false
+        },
+        {
+            name: 'Tuesday',
+            display: 'Tu',
+            val: 2,
+            checked: false
+        },
+        {
+            name: 'Wednesday',
+            display: 'We',
+            val: 3,
+            checked: false
+        },
+        {
+            name: 'Thursday',
+            display: 'Th',
+            val: 4,
+            checked: false
+        },
+        {
+            name: 'Friday',
+            display: 'Fr',
+            val: 5,
+            checked: false
+        },
+        {
+            name: 'Saturday',
+            display: 'Sa',
+            val: 6,
+            checked: false
+        }
+    ];
 });
 
 //Settings controller

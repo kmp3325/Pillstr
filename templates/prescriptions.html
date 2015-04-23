@@ -27,6 +27,49 @@
     </div>
 </nav>
 
-<h3>Prescriptions page</h3>
+<!--<h3>Prescriptions page</h3>-->
+<div class="prescriptions">
+    <div class="prescription" ng-repeat="prescription in prescriptions">
+        <div class="remind">
+            <input type="checkbox" />
+        </div>
+        <div class="prescriptionBox">
+            <div class="prescriptionTitleBar">
+                <span class="pillImage">
+                    <img src="http://placehold.it/200x200" style="width:1em; height:1em;"/>
+                </span>
+                <span class="prescriptionQuantityDisplay">
+                    x{{prescription.quantity}}
+                </span>
+                <span class="prescriptionName">
+                    {{prescription.displayName}}
+                </span>
+            </div>
+            <div class="prescriptionContentBox">
+                <div class="quantityControl">
+                    Take <input type="number" ng-model="prescription.quantity" /> each time
+                </div>
+                <div class="prescriptionDaySelector">
+                    Remind to take on:
+                    <ul class="dayList">
+                        <li ng-repeat="day in days">
+                            <label ng-class="{'selected': day.checked}" class="noSelect">
+                                {{day.display}}
+                                <input type="checkbox" value="{{day.val}}" ng-model="day.checked" />
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="prescriptionTimeSelector">
+                    Remind to take at:
+                    <input type="time" />
+                </div>
+                <div class="prescriptionDescription">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

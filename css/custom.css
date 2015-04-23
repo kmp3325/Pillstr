@@ -19,3 +19,99 @@
     text-align: left;
     margin-left: 42%;
 }
+
+.noSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/***************
+My Prescriptions
+***************/
+
+.remind, .prescriptionBox, .dayList li {
+    display: inline-block;
+}
+
+.remind {
+    vertical-align: top;
+}
+
+.prescriptionTitleBar {
+    font-size: 2em;
+    border-bottom: 1px solid black;
+}
+
+.prescriptionBox {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.prescriptionBox > * {
+    padding: 0 5px;
+}
+
+.quantityControl input {
+    width: 3em;
+}
+
+.quantityControl, .prescription {
+    padding-top: 5px;
+}
+
+.prescriptionTimeSelector {
+    padding-bottom: 5px;
+}
+
+.prescriptionDaySelector {
+    font-weight: bold;
+}
+
+.prescriptionDaySelector .dayList label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.dayList, .dayList li {
+    list-style: none;
+}
+
+.prescription, .dayList {
+    text-align: center;
+}
+
+.dayList {
+    padding-left: 0;
+    height: 1.2em;
+}
+
+.dayList input {
+    display: none;
+}
+
+.dayList label.selected {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #000080;
+}
+
+.dayList label:not(.selected) {
+    color: #707070;
+}
+
+.dayList li {
+    padding: 0 5px;
+    height: 1.2em;
+    margin: 5px;
+    width: 2em;
+    vertical-align: middle;
+}
+
+.prescriptionBox {
+    min-width: 50%;
+    text-align: left;
+}
