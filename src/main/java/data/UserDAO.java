@@ -24,10 +24,10 @@ public interface UserDAO {
     @GetGeneratedKeys
     public int insert(@Bind("name") String name, @Bind("password") String password);
 
-    @SqlQuery("SELECT * FROM users WHERE id = :id")
+    @SqlQuery("SELECT * FROM users WHERE id = :id LIMIT 1")
     public User get(@Bind("id") int id);
 
-    @SqlUpdate("DELETE FROM users WHERE id = :id")
+    @SqlUpdate("DELETE FROM users WHERE id = :id LIMIT 1")
     public void delete(@Bind("id") int id);
 
     @SqlQuery("SELECT * FROM users WHERE name = :name")

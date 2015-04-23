@@ -45,7 +45,7 @@ public class UserResource {
     }
 
     @GET
-    @Path("/-/{name}")
+    @Path("/-/by-name/{name}")
     public User get(@PathParam("name") String name) {
         return userDAO.get(name);
     }

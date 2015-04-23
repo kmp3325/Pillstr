@@ -19,13 +19,16 @@ public interface PrescriptionDAO {
     @SqlQuery("SELECT * FROM prescriptions")
     public List<Prescription> getAll();
 
-    @SqlQuery("SELECT * FROM prescriptions WHERE id = :id")
+    @SqlQuery("SELECT * FROM prescriptions WHERE id = :id LIMIT 1")
     public Prescription get(@Bind("id") int id);
 
-    @SqlUpdate("DELETE FROM prescriptions WHERE id = :id")
+    @SqlUpdate("DELETE FROM prescriptions WHERE id = :id LIMIT 1")
     public void delete(@Bind("id") int id);
 
     @SqlUpdate("INSERT INTO prescriptions (name, userId, displayName, quantity, notes) VALUES (:name, :userId, :displayName, :quantity, :notes)")
     @GetGeneratedKeys
     public int insert(@Bind("name") String name, @Bind("userId") int userId, @Bind("displayName") String displayName, @Bind("quantity") double quantity, @Bind("notes") String notes);
+
+    @SqlQuery("SELECT * FROM prescriptions WHERE userId = :userId")
+    public List<Prescription> getByUserId(@Bind("userId") int userId);
 }
