@@ -25,9 +25,9 @@ public interface RemindersDAO {
     @SqlUpdate("DELETE FROM reminders WHERE id = :id LIMIT 1")
     public void delete(@Bind("id") int id);
 
-    @SqlUpdate("INSERT INTO reminders (prescriptionId, day, hour, minute, dosage) VALUES (:prescriptionId, :day, :hour, :minute, :dosage)")
+    @SqlUpdate("INSERT INTO reminders (prescriptionId, taken, time) VALUES (:prescriptionId, :taken, :time)")
     @GetGeneratedKeys
-    public int insert(@Bind("prescriptionId") int prescriptionId, @Bind("day") int day, @Bind("hour") int hour, @Bind("minute") int minute, @Bind("dosage") double dosage);
+    public int insert(@Bind("prescriptionId") int prescriptionId, @Bind("taken") boolean taken, @Bind("time") long time);
 
     @SqlQuery("SELECT * FROM reminders WHERE prescriptionId = :prescriptionId")
     public List<Reminder> getByPrescriptionId(@Bind("prescriptionId") int prescriptionId);

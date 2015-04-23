@@ -40,8 +40,8 @@ public class RemindersResource {
     }
 
     @POST
-    public int post(@QueryParam("prescriptionId") int prescriptionId, @QueryParam("day") int day, @QueryParam("hour") int hour, @QueryParam("minute") int minute, @QueryParam("dosage") double dosage) {
-        return remindersDAO.insert(prescriptionId, day, hour, minute, dosage);
+    public int post(@QueryParam("prescriptionId") int prescriptionId, @QueryParam("taken") boolean taken, @QueryParam("time") long time) {
+        return remindersDAO.insert(prescriptionId, taken, time);
     }
 
     @GET
