@@ -6,10 +6,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
-import resources.PrescriptionResource;
-import resources.RemindersResource;
-import resources.TestResource;
-import resources.UserResource;
+import resources.*;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -46,7 +43,7 @@ public class PillstrApplication extends Application<PillstrConfiguration> {
 
         pillstrModule.setJdbi(jdbi);
 
-        registerResources(environment, TestResource.class, UserResource.class, PrescriptionResource.class, RemindersResource.class);
+        registerResources(environment, TestResource.class, UserResource.class, PrescriptionResource.class, RemindersResource.class, PillEventResource.class);
         // Enable CORS headers
         final FilterRegistration.Dynamic cors =
                 environment.servlets().addFilter("CORS", CrossOriginFilter.class);

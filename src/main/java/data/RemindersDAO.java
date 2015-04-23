@@ -31,4 +31,10 @@ public interface RemindersDAO {
 
     @SqlQuery("SELECT * FROM reminders WHERE prescriptionId = :prescriptionId")
     public List<Reminder> getByPrescriptionId(@Bind("prescriptionId") int prescriptionId);
+
+    @SqlQuery("SELECT * FROM reminders WHERE prescriptionId = :prescriptionId AND time > :time")
+    public List<Reminder> getPastTime(@Bind("prescriptionId") int prescriptionId, @Bind("time") long time);
+
+    @SqlQuery("SELECT * FROM reminders WHERE prescriptionId = :prescriptionId AND time = :time LIMIT 1")
+    public Reminder getByPrescriptionIdAndTime(@Bind("prescriptionId") int prescriptionId, @Bind("time") long time);
 }

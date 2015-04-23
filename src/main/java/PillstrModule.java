@@ -2,6 +2,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
+import data.PillEventDAO;
 import data.PrescriptionDAO;
 import data.RemindersDAO;
 import data.UserDAO;
@@ -42,6 +43,11 @@ public class PillstrModule implements Module {
     @Provides
     public RemindersDAO providesRemindersDAO() {
         return jdbi.onDemand(RemindersDAO.class);
+    }
+
+    @Provides
+    public PillEventDAO providesPillEventDAO() {
+        return jdbi.onDemand(PillEventDAO.class);
     }
 
 }

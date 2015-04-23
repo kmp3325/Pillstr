@@ -49,5 +49,4 @@ public class RemindersResource {
     public List<Reminder> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
         return remindersDAO.getByPrescriptionId(prescriptionId);
     }
-
 }

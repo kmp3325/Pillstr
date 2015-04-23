@@ -2,7 +2,9 @@ package resources;
 
 import com.google.common.base.Optional;
 import data.PrescriptionDAO;
+import logic.RemindersHandler;
 import models.Prescription;
+import models.Reminder;
 
 import javax.inject.Inject;
 import javax.ws.rs.Path;
@@ -24,10 +26,12 @@ import java.util.List;
 public class PrescriptionResource {
 
     private PrescriptionDAO prescriptionDAO;
+    private RemindersHandler remindersHandler;
 
     @Inject
-    public PrescriptionResource(PrescriptionDAO prescriptionDAO) {
+    public PrescriptionResource(PrescriptionDAO prescriptionDAO, RemindersHandler remindersHandler) {
         this.prescriptionDAO = prescriptionDAO;
+        this.remindersHandler = remindersHandler;
     }
 
     @GET
@@ -48,8 +52,8 @@ public class PrescriptionResource {
     }
 
     @POST
-    public int insert(@QueryParam("name") String name, @QueryParam("userId") int userId, @QueryParam("displayName") String displayName, @QueryParam("quantity") double quantity, @QueryParam("notes") String notes, @QueryParam("day") int day, @QueryParam("hour") int hour, @QueryParam("minute") int minute, @QueryParam("dosage") double dosage, @QueryParam("remind") boolean remind) {
-        return prescriptionDAO.insert(name, userId, displayName, quantity, notes, day, hour, minute, dosage, remind);
+    public int insert(@QueryParam("name") String name, @QueryParam("userId") int userId, @QueryParam("displayName") String displayName, @QueryParam("quantity") double quantity, @QueryParam("notes") String notes, @QueryParam("dosage") double dosage, @QueryParam("remind") boolean remind) {
+        return prescriptionDAO.insert(name, userId, displayName, quantity, notes, dosage, remind);
     }
 
     @GET
@@ -75,9 +79,6 @@ public class PrescriptionResource {
                     @QueryParam("displayName") Optional<String> displayName,
                     @QueryParam("quantity") Optional<Integer> quantity,
                     @QueryParam("notes") Optional<String> notes,
-                    @QueryParam("day") Optional<Integer> day,
-                    @QueryParam("hour") Optional<Integer> hour,
-                    @QueryParam("minute") Optional<Integer> minute,
                     @QueryParam("dosage") Optional<Double> dosage,
                     @QueryParam("remind") Optional<Boolean> remind) {
 
@@ -86,10 +87,19 @@ public class PrescriptionResource {
         if (displayName.isPresent()) prescriptionDAO.setDisplayName(id, displayName.get());
         if (quantity.isPresent()) prescriptionDAO.setQuantity(id, quantity.get());
         if (notes.isPresent()) prescriptionDAO.setNotes(id, notes.get());
-        if (day.isPresent()) prescriptionDAO.setDay(id, day.get());
-        if (hour.isPresent()) prescriptionDAO.setHour(id, hour.get());
-        if (minute.isPresent()) prescriptionDAO.setMinute(id, minute.get());
         if (dosage.isPresent()) prescriptionDAO.setDosage(id, dosage.get());
         if (remind.isPresent()) prescriptionDAO.setRemind(id, remind.get());
+    }
+
+    @GET
+    @Path("/{id}/reminders-for-date/{time}")
+    public List<Reminder> getByTime(@PathParam("id") int id, @PathParam("time") long time) {
+        return remindersHandler.generateReminders(id, time);
+    }
+
+    @DELETE
+    @Path("/{id}/reminders-past-time/{time}")
+    public void deletePastTime(@PathParam("id") int id, @PathParam("time") long time) {
+        remindersHandler.deletePastTime(id, time);
     }
 }

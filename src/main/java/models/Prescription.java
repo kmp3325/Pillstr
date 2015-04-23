@@ -15,9 +15,6 @@ public class Prescription {
     private String displayName;
     private double quantity;
     private String notes;
-    private int day;
-    private int hour;
-    private int minute;
     private double dosage;
     private boolean remind;
 
@@ -28,9 +25,6 @@ public class Prescription {
                         @JsonProperty("displayName") String displayName,
                         @JsonProperty("quantity") double quantity,
                         @JsonProperty("notes") String notes,
-                        @JsonProperty("day") int day,
-                        @JsonProperty("hour") int hour,
-                        @JsonProperty("minute") int minute,
                         @JsonProperty("dosage") double dosage,
                         @JsonProperty("remind") boolean remind) {
         this.id = id;
@@ -39,9 +33,6 @@ public class Prescription {
         this.displayName = displayName;
         this.quantity = quantity;
         this.notes = notes;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
         this.dosage = dosage;
         this.remind = remind;
     }
@@ -70,18 +61,6 @@ public class Prescription {
         return notes;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
     public double getDosage() {
         return dosage;
     }
@@ -99,9 +78,6 @@ public class Prescription {
                 .add("displayName", displayName)
                 .add("quantity", quantity)
                 .add("notes", notes)
-                .add("day", day)
-                .add("hour", hour)
-                .add("minute", minute)
                 .add("dosage", dosage)
                 .add("remind", remind)
                 .toString();

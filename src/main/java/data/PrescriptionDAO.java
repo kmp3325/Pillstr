@@ -25,9 +25,9 @@ public interface PrescriptionDAO {
     @SqlUpdate("DELETE FROM prescriptions WHERE id = :id LIMIT 1")
     public void delete(@Bind("id") int id);
 
-    @SqlUpdate("INSERT INTO prescriptions (name, userId, displayName, quantity, notes, day, hour, minute, dosage, remind) VALUES (:name, :userId, :displayName, :quantity, :notes, :day, :hour, :minute, :dosage, :remind)")
+    @SqlUpdate("INSERT INTO prescriptions (name, userId, displayName, quantity, notes, dosage, remind) VALUES (:name, :userId, :displayName, :quantity, :notes, :dosage, :remind)")
     @GetGeneratedKeys
-    public int insert(@Bind("name") String name, @Bind("userId") int userId, @Bind("displayName") String displayName, @Bind("quantity") double quantity, @Bind("notes") String notes, @Bind("day") int day, @Bind("hour") int hour, @Bind("minute") int minute, @Bind("dosage") double dosage, @Bind("remind") boolean remind);
+    public int insert(@Bind("name") String name, @Bind("userId") int userId, @Bind("displayName") String displayName, @Bind("quantity") double quantity, @Bind("notes") String notes, @Bind("dosage") double dosage, @Bind("remind") boolean remind);
 
     @SqlUpdate("SELECT * FROM prescriptions WHERE userId = :userId")
     public List<Prescription> getByUserId(@Bind("userId") int userId);
@@ -52,15 +52,6 @@ public interface PrescriptionDAO {
 
     @SqlUpdate("UPDATE prescriptions SET notes = :notes WHERE id = :id LIMIT 1")
     public void setNotes(@Bind("id") int id, @Bind("notes") String notes);
-
-    @SqlUpdate("UPDATE prescriptions SET day = :day WHERE id = :id LIMIT 1")
-    public void setDay(@Bind("id") int id, @Bind("day") Integer day);
-
-    @SqlUpdate("UPDATE prescriptions SET hour = :hour WHERE id = :id LIMIT 1")
-    public void setHour(@Bind("id") int id, @Bind("hour") Integer hour);
-
-    @SqlUpdate("UPDATE prescriptions SET minute = :minute WHERE id = :id LIMIT 1")
-    public void setMinute(@Bind("id") int id, @Bind("minute") Integer minute);
 
     @SqlUpdate("UPDATE prescriptions SET dosage = :dosage WHERE id = :id LIMIT 1")
     public void setDosage(@Bind("id") int id, @Bind("dosage") Double dosage);

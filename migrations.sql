@@ -5,9 +5,6 @@ CREATE TABLE `prescriptions` (
   `displayName` varchar(250),
   `quantity` double,
   `notes` text,
-  `day` int(11) NOT NULL,
-  `hour` int(11) NOT NULL,
-  `minute` int(11) DEFAULT 0,
   `dosage` double NOT NULL,
   `remind` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
@@ -17,7 +14,7 @@ CREATE TABLE `reminders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `prescriptionId` int(11) NOT NULL,
   `taken` tinyint(1) NOT NULL,
-  `time`datetime NOT NULL,
+  `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -28,5 +25,14 @@ CREATE TABLE `users` (
   `email` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
   `phone` int(11),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `events` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `prescriptionId` int(11) NOT NULL,
+  `day` INT(11) NOT NULL,
+  `hour` INT(11) NOT NULL,
+  `minute` INT(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
