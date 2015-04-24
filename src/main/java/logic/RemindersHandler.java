@@ -2,8 +2,10 @@ package logic;
 
 import com.google.common.base.Optional;
 import data.PillEventDAO;
+import data.PrescriptionDAO;
 import data.RemindersDAO;
 import models.PillEvent;
+import models.Prescription;
 import models.Reminder;
 import org.joda.time.DateTime;
 
@@ -20,11 +22,36 @@ public class RemindersHandler {
 
     private RemindersDAO remindersDAO;
     private PillEventDAO pillEventDAO;
+    private PrescriptionDAO prescriptionDAO;
 
     @Inject
-    public RemindersHandler(RemindersDAO remindersDAO, PillEventDAO pillEventDAO) {
+    public RemindersHandler(RemindersDAO remindersDAO, PillEventDAO pillEventDAO, PrescriptionDAO prescriptionDAO) {
         this.remindersDAO = remindersDAO;
         this.pillEventDAO = pillEventDAO;
+        this.prescriptionDAO = prescriptionDAO;
+    }
+
+    public List<Reminder> getAllRemindersByUserId(int userId, int year, int month, int date) {
+        List<Reminder> result = new ArrayList<>();
+        for (Prescription prescription : prescriptionDAO.getByUserId(userId)) {
+            result.addAll(generateRemindersForEntireWeek(prescription.getId(), year, month, date));
+        }
+
+        return result;
+    }
+
+    public List<Reminder> generateRemindersForEntireWeek(int prescriptionId, int year, int month, int date) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, date);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+
+        List<Reminder> result = new ArrayList<>();
+        for (int i=0; i<7; i++) {
+            result.addAll(getAll(prescriptionId, cal));
+            cal.add(Calendar.DATE, 1);
+        }
+
+        return result;
     }
 
     public List<Reminder> generateReminders(int prescriptionId, int year, int month, int date) {
