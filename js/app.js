@@ -53,6 +53,7 @@ app.controller("loginController", function($scope, $location, $http){
 
                 if($scope.response == true){
                     sessionStorage.setItem('currUser', request.username);
+                    sessionStorage.setItem('userId', request.userId);
                     $location.path('/home');
                 }
                 else{
@@ -98,20 +99,43 @@ app.controller("accountController", function($scope, $location, $http){
             error(function(data) {
                 console.log("Error occurred in creating new account.");
                 console.log(data);
+                $scope.state = false;
             });
     }
 });
 
 //Home controller
-app.controller("homeController", function($scope){
+app.controller("homeController", function($scope, $http){
     sessionStorage.setItem('contrl', "homeController");
     sessionStorage.setItem('auth', true);
-});
-
-//Prescription controller
-app.controller("prescriptionController", function($scope){
-    sessionStorage.setItem('auth', true);
-
+    var userId = 1//sessionStorage.getItem('userId');
+    //$scope.reminders = [];
+    //
+    //$http.get(apiBaseURL + 'prescriptions/-/by-userId/' + userId)
+    //    .success(function(data, status, headers, config) {
+    //        if(status === 204) {
+    //            return
+    //        }
+    //        else if(!Array.isArray(data)) {
+    //            data = [data];
+    //        }
+    //
+    //        var today = new Date();
+    //
+    //        for(var i = 0; i < data.length; i++) {
+    //            console.log(data[i]);
+    //            $http.get(apiBaseURL + 'reminders/-/by-prescriptionId-for-entire-week/' + data[i].id + '/' + today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate())
+    //                .success(function(data2, status, headers, config) {
+    //                    console.log('GET reminders successful');
+    //                    console.log(data2);
+    //                    if(!Array.isArray(data2)) {
+    //                        data2 = [data2]
+    //                    }
+    //                    $scope.reminders.concat(data2);
+    //                });
+    //        }
+    //    }
+    //);
     $scope.reminders = [
         {
             "id": 0,
@@ -238,7 +262,7 @@ app.controller("prescriptionController", function($scope, $http){
     sessionStorage.setItem('auth', true);
     $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     //sessionStorage.getItem('userId');
-    var userId = 1;
+    var userId = 1//sessionStorage.getItem('userId');
     var prescriptionUrl = apiBaseURL + 'prescriptions/-/by-userId/' + userId;
     $scope.prescriptions = [];
     $http.get(prescriptionUrl)
@@ -296,6 +320,7 @@ app.controller("prescriptionController", function($scope, $http){
                                 {
                                     data2[y].days = [data2[y].day];
                                     data2[y].ids = [data2[y].id];
+                                    data2[y].time = new Date(1970, 0, 1, data2[y].hour, data2[y].minute, 0);
                                     $scope.prescriptions[i].metaEvents.push(data2[y]);
                                 }
                             }
@@ -390,20 +415,28 @@ app.controller("prescriptionController", function($scope, $http){
     };
 
     $scope.cancelEdit = function(prescription) {
+        prescription.confirmingDelete = false;
         if(prescription.isNew) {
             $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
         }
 
-        prescription.editing = false;
-        prescription.displayName = prescription.original.displayName;
-        prescription.dosage = prescription.original.dosage;
-        prescription.quantity = prescription.original.quantity;
-        prescription.notes = prescription.original.notes;
-        prescription.metaEvents = prescription.original.metaEvents;
-        prescription.original = undefined;
+        else {
+            for(var i = 0; i < prescription.original.metaEvents.length; i++) {
+                prescription.original.metaEvents[i].time = new Date(1970, 0, 1, prescription.original.metaEvents[i].hour, prescription.original.metaEvents[i].minute, 0);
+            }
+
+            prescription.editing = false;
+            prescription.displayName = prescription.original.displayName;
+            prescription.dosage = prescription.original.dosage;
+            prescription.quantity = prescription.original.quantity;
+            prescription.notes = prescription.original.notes;
+            prescription.metaEvents = prescription.original.metaEvents;
+            prescription.original = undefined;
+        }
     };
 
     $scope.saveEdit = function(prescription) {
+        prescription.confirmingDelete = false;
         var parameters = {
             name: prescription.name,
             userId: prescription.userId,
@@ -435,6 +468,7 @@ app.controller("prescriptionController", function($scope, $http){
                 params: parameters,
                 data: parameters
             });
+
         }
 
         else {
@@ -450,6 +484,35 @@ app.controller("prescriptionController", function($scope, $http){
                 console.log("PUT of prescription unsuccessful");
             });
         }
+
+        $http({
+            url: apiBaseURL + 'events/-/by-prescriptionId/' + prescription.id,
+            method: 'DELETE'
+        }).success(function() {
+
+            for (var i = 0; i < prescription.metaEvents.length; i++) {
+                for (var y = 0; y < prescription.metaEvents[i].days.length; y++) {
+                    var eventData = {
+                        prescriptionId: prescription.id,
+                        day: prescription.metaEvents[i].days[y],
+                        hour: prescription.metaEvents[i].time.getHours(),
+                        minute: prescription.metaEvents[i].time.getMinutes()
+                    };
+                    console.log(data);
+
+                    $http({
+                        url: apiBaseURL + 'events',
+                        method: 'POST',
+                        data: eventData,
+                        params: eventData
+                    }).success(function () {
+                        console.log('POST of events successful');
+                    }).error(function () {
+                        console.log('POST of events unsuccessful');
+                    })
+                }
+            }
+        });
     };
 
     $scope.addPrescription = function() {
@@ -462,10 +525,58 @@ app.controller("prescriptionController", function($scope, $http){
             quantity: 0,
             notes: '',
             dosage: 0,
-            remind: true
+            remind: true,
+            metaEvents: []
         };
         $scope.prescriptions.push(newPrescription);
-    }
+    };
+
+    $scope.addEvent = function(prescription) {
+        prescription.metaEvents.push({
+            prescriptionId: prescription.id,
+            days: []
+        });
+    };
+
+    $scope.removeEvent = function(prescription, event) {
+        prescription.metaEvents.splice(prescription.metaEvents.indexOf(event), 1);
+    };
+
+    $scope.toggleRemind = function(prescription) {
+        $http({
+            url: apiBaseURL + 'prescriptions/' + prescription.id,
+            method: 'PUT',
+            params: {remind: prescription.remind}
+        })
+    };
+
+    $scope.confirmingDelete = function(prescription) {
+        if(prescription.confirmingDelete === undefined) {
+            prescription.confirmingDelete = false;
+        }
+
+        return prescription.confirmingDelete;
+    };
+
+    $scope.deletePrescription = function(prescription) {
+        if(prescription.isNew) {
+            $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
+        }
+        else {
+            $http({
+                url: apiBaseURL + 'prescriptions/' + prescription.id,
+                method: 'DELETE'
+            })
+                .success(function() {
+                    console.log('DELETE of prescription successful');
+                    $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
+                })
+                .error(function() {
+                    console.log('DELETE of prescription unsuccessful');
+                })
+
+        }
+    };
 });
 
 //Settings controller
@@ -489,7 +600,7 @@ app.controller("settingController", function($scope, $http, $location){
 
     $scope.cancelSettings = function(){
         $location.path('/home');
-    }
+    };
 
     $scope.saved = false;
     $scope.saveAcct = function(){

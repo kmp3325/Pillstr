@@ -81,6 +81,7 @@ Home
 .nav-tabs, .nav-pills {
     text-align:center;
 }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .clickable {
     cursor: pointer;
