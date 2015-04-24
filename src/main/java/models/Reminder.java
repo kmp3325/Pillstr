@@ -11,24 +11,18 @@ public class Reminder {
 
     private int id;
     private int prescriptionId;
-    private int day;
-    private int hour;
-    private int minute;
-    private double dosage;
+    private boolean taken;
+    private long time;
 
     @JsonCreator
     public Reminder(@JsonProperty("id") int id,
                     @JsonProperty("prescriptionId") int prescriptionId,
-                    @JsonProperty("day") int day,
-                    @JsonProperty("hour") int hour,
-                    @JsonProperty("minute") int minute,
-                    @JsonProperty("dosage") double dosage) {
+                    @JsonProperty("taken") boolean taken,
+                    @JsonProperty("time") long time) {
         this.id = id;
         this.prescriptionId = prescriptionId;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
-        this.dosage = dosage;
+        this.taken = taken;
+        this.time = time;
     }
 
 
@@ -40,20 +34,12 @@ public class Reminder {
         return prescriptionId;
     }
 
-    public int getDay() {
-        return day;
+    public boolean getTaken() {
+        return taken;
     }
 
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public double getDosage() {
-        return dosage;
+    public long getTime() {
+        return time;
     }
 
     @Override
@@ -61,10 +47,8 @@ public class Reminder {
         return Objects.toStringHelper(this)
                 .add("id", id)
                 .add("prescriptionId", prescriptionId)
-                .add("day", day)
-                .add("hour", hour)
-                .add("minute", minute)
-                .add("dosage", dosage)
+                .add("taken", taken)
+                .add("time", time)
                 .toString();
     }
 }

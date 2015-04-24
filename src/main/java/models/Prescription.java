@@ -15,6 +15,8 @@ public class Prescription {
     private String displayName;
     private double quantity;
     private String notes;
+    private double dosage;
+    private boolean remind;
 
     @JsonCreator
     public Prescription(@JsonProperty("id") int id,
@@ -22,13 +24,17 @@ public class Prescription {
                         @JsonProperty("userId") int userId,
                         @JsonProperty("displayName") String displayName,
                         @JsonProperty("quantity") double quantity,
-                        @JsonProperty("notes") String notes) {
+                        @JsonProperty("notes") String notes,
+                        @JsonProperty("dosage") double dosage,
+                        @JsonProperty("remind") boolean remind) {
         this.id = id;
         this.name = name;
         this.userId = userId;
         this.displayName = displayName;
         this.quantity = quantity;
         this.notes = notes;
+        this.dosage = dosage;
+        this.remind = remind;
     }
 
     public int getId() {
@@ -55,6 +61,14 @@ public class Prescription {
         return notes;
     }
 
+    public double getDosage() {
+        return dosage;
+    }
+
+    public boolean getRemind() {
+        return remind;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -64,7 +78,8 @@ public class Prescription {
                 .add("displayName", displayName)
                 .add("quantity", quantity)
                 .add("notes", notes)
+                .add("dosage", dosage)
+                .add("remind", remind)
                 .toString();
     }
-
 }
