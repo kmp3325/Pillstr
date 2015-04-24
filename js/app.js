@@ -383,6 +383,7 @@ app.controller("prescriptionController", function($scope, $http){
     };
 
     $scope.cancelEdit = function(prescription) {
+        prescription.confirmingDelete = false;
         if(prescription.isNew) {
             $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
         }
@@ -397,6 +398,7 @@ app.controller("prescriptionController", function($scope, $http){
     };
 
     $scope.saveEdit = function(prescription) {
+        prescription.confirmingDelete = false;
         var parameters = {
             name: prescription.name,
             userId: prescription.userId,
@@ -458,7 +460,50 @@ app.controller("prescriptionController", function($scope, $http){
             remind: true
         };
         $scope.prescriptions.push(newPrescription);
-    }
+    };
+
+    $scope.addEvent = function(prescription) {
+        prescription.metaEvents.push({
+            prescriptionId: prescription.id,
+            days: []
+        });
+    };
+
+    $scope.toggleRemind = function(prescription) {
+        $http({
+            url: apiBaseURL + 'prescriptions/' + prescription.id,
+            method: 'PUT',
+            params: {remind: prescription.remind}
+        })
+    };
+
+    $scope.confirmingDelete = function(prescription) {
+        if(prescription.confirmingDelete === undefined) {
+            prescription.confirmingDelete = false;
+        }
+
+        return prescription.confirmingDelete;
+    };
+
+    $scope.deletePrescription = function(prescription) {
+        if(prescription.isNew) {
+            $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
+        }
+        else {
+            $http({
+                url: apiBaseURL + 'prescriptions/' + prescription.id,
+                method: 'DELETE'
+            })
+                .success(function() {
+                    console.log('DELETE of prescription successful');
+                    $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
+                })
+                .error(function() {
+                    console.log('DELETE of prescription unsuccessful');
+                })
+
+        }
+    };
 });
 
 //Settings controller
