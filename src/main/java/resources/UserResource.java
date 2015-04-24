@@ -1,11 +1,14 @@
 package resources;
 
 import data.UserDAO;
+import logic.RemindersHandler;
+import models.Reminder;
 import models.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +20,12 @@ import java.util.Optional;
 public class UserResource {
 
     private UserDAO userDAO;
+    private RemindersHandler remindersHandler;
 
     @Inject
-    public UserResource(UserDAO userDAO) {
+    public UserResource(UserDAO userDAO, RemindersHandler remindersHandler) {
         this.userDAO = userDAO;
+        this.remindersHandler = remindersHandler;
     }
 
     @GET
@@ -59,5 +64,11 @@ public class UserResource {
             return true;
         }
         return false;
+    }
+
+    @GET
+    @Path("/{userId}/all-reminders-for-entire-week/{year}/{month}/{date}")
+    public List<Reminder> getAllReminders(@PathParam("userId") int userId, @PathParam("year") int year, @PathParam("month") int month, @PathParam("date") int date) {
+        return remindersHandler.getAllRemindersByUserId(userId, year, month, date);
     }
 }
