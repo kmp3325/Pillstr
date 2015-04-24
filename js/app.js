@@ -53,6 +53,7 @@ app.controller("loginController", function($scope, $location, $http){
 
                 if($scope.response == true){
                     sessionStorage.setItem('currUser', request.username);
+                    sessionStorage.setItem('userId', request.userId);
                     $location.path('/home');
                 }
                 else{
@@ -103,84 +104,111 @@ app.controller("accountController", function($scope, $location, $http){
 });
 
 //Home controller
-app.controller("homeController", function($scope){
+app.controller("homeController", function($scope, $http){
     sessionStorage.setItem('contrl', "homeController");
     sessionStorage.setItem('auth', true);
-    $scope.reminders = [];
-    //$scope.reminders = [
-    //    {
-    //        "id": 0,
-    //        "prescription": "Gabapentin",
-    //        "userId": 7,
-    //        "displayName": "Neurontin",
-    //        "quantity": 6.2,
-    //        "day": 0,
-    //        "time": "9:00",
-    //        "taken": true,
-    //        "remaining": 10,
-    //        "notes": "Lorem nostrud tempor sunt sint ea cillum culpa enim culpa excepteur."
-    //    },
-    //    {
-    //        "id": 1,
-    //        "name": "Citalopram Hydrobromide",
-    //        "userId": 7,
-    //        "displayName": "Celexa",
-    //        "quantity": 3.3,
-    //        "day": 0,
-    //        "time": "12:00",
-    //        "taken": false,
-    //        "remaining": 20,
-    //        "notes": "Cupidatat amet reprehenderit esse culpa eiusmod dolore veniam."
-    //    },
-    //    {
-    //        "id": 2,
-    //        "name": "CIV Alprazolam",
-    //        "userId": 10,
-    //        "displayName": "Xanax",
-    //        "quantity": 6.2,
-    //        "day": 2,
-    //        "time": "15:00",
-    //        "taken": false,
-    //        "remaining": 6,
-    //        "notes": "Fugiat amet irure adipisicing do cupidatat nostrud cupidatat mollit duis enim id do deserunt."
-    //    },
-    //    {
-    //        "id": 3,
-    //        "name": "Clonazepam",
-    //        "userId": 2,
-    //        "displayName": "Klonopin",
-    //        "quantity": 9.7,
-    //        "day": 4,
-    //        "time": "10:00",
-    //        "taken": true,
-    //        "remaining": 12,
-    //        "notes": "Eu qui est minim proident non qui."
-    //    },
-    //    {
-    //        "id": 4,
-    //        "name": "Ciprofloxacin Hydrochloride",
-    //        "userId": 8,
-    //        "displayName": "Cipro",
-    //        "quantity": 3.6,
-    //        "day": 4,
-    //        "time": "18:00",
-    //        "taken": false,
-    //        "remaining": 31,
-    //        "notes": "Nisi excepteur deserunt magna velit enim exercitation consectetur fugiat deserunt amet aute."
-    //    },
-    //    {
-    //        "id": 5,
-    //        "name": "Oxycodone and Acetaminophen",
-    //        "userId": 6,
-    //        "displayName": "Percocet",
-    //        "quantity": 0.5,
-    //        "day": 6,
-    //        "time": "10:30",
-    //        "taken": false,
-    //        "remaining": 27,
-    //        "notes": "Proident sit veniam eu laboris veniam ut adipisicing."
+    var userId = 1//sessionStorage.getItem('userId');
+    //$scope.reminders = [];
+    //
+    //$http.get(apiBaseURL + 'prescriptions/-/by-userId/' + userId)
+    //    .success(function(data, status, headers, config) {
+    //        if(status === 204) {
+    //            return
+    //        }
+    //        else if(!Array.isArray(data)) {
+    //            data = [data];
+    //        }
+    //
+    //        var today = new Date();
+    //
+    //        for(var i = 0; i < data.length; i++) {
+    //            console.log(data[i]);
+    //            $http.get(apiBaseURL + 'reminders/-/by-prescriptionId-for-entire-week/' + data[i].id + '/' + today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate())
+    //                .success(function(data2, status, headers, config) {
+    //                    console.log('GET reminders successful');
+    //                    console.log(data2);
+    //                    if(!Array.isArray(data2)) {
+    //                        data2 = [data2]
+    //                    }
+    //                    $scope.reminders.concat(data2);
+    //                });
+    //        }
     //    }
-    //];
+    //);
+    $scope.reminders = [
+        {
+            "id": 0,
+            "prescription": "Gabapentin",
+            "userId": 7,
+            "displayName": "Neurontin",
+            "quantity": 6.2,
+            "day": 0,
+            "time": "9:00",
+            "taken": true,
+            "remaining": 10,
+            "notes": "Lorem nostrud tempor sunt sint ea cillum culpa enim culpa excepteur."
+        },
+        {
+            "id": 1,
+            "name": "Citalopram Hydrobromide",
+            "userId": 7,
+            "displayName": "Celexa",
+            "quantity": 3.3,
+            "day": 0,
+            "time": "12:00",
+            "taken": false,
+            "remaining": 20,
+            "notes": "Cupidatat amet reprehenderit esse culpa eiusmod dolore veniam."
+        },
+        {
+            "id": 2,
+            "name": "CIV Alprazolam",
+            "userId": 10,
+            "displayName": "Xanax",
+            "quantity": 6.2,
+            "day": 2,
+            "time": "15:00",
+            "taken": false,
+            "remaining": 6,
+            "notes": "Fugiat amet irure adipisicing do cupidatat nostrud cupidatat mollit duis enim id do deserunt."
+        },
+        {
+            "id": 3,
+            "name": "Clonazepam",
+            "userId": 2,
+            "displayName": "Klonopin",
+            "quantity": 9.7,
+            "day": 4,
+            "time": "10:00",
+            "taken": true,
+            "remaining": 12,
+            "notes": "Eu qui est minim proident non qui."
+        },
+        {
+            "id": 4,
+            "name": "Ciprofloxacin Hydrochloride",
+            "userId": 8,
+            "displayName": "Cipro",
+            "quantity": 3.6,
+            "day": 4,
+            "time": "18:00",
+            "taken": false,
+            "remaining": 31,
+            "notes": "Nisi excepteur deserunt magna velit enim exercitation consectetur fugiat deserunt amet aute."
+        },
+        {
+            "id": 5,
+            "name": "Oxycodone and Acetaminophen",
+            "userId": 6,
+            "displayName": "Percocet",
+            "quantity": 0.5,
+            "day": 6,
+            "time": "10:30",
+            "taken": false,
+            "remaining": 27,
+            "notes": "Proident sit veniam eu laboris veniam ut adipisicing."
+        }
+    ];
 
     $scope.days = [
         {
@@ -233,7 +261,7 @@ app.controller("prescriptionController", function($scope, $http){
     sessionStorage.setItem('auth', true);
     $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     //sessionStorage.getItem('userId');
-    var userId = 1;
+    var userId = 1//sessionStorage.getItem('userId');
     var prescriptionUrl = apiBaseURL + 'prescriptions/-/by-userId/' + userId;
     $scope.prescriptions = [];
     $http.get(prescriptionUrl)
