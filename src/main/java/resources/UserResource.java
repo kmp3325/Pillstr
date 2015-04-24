@@ -58,7 +58,7 @@ public class UserResource {
     @GET
     @Path("/-/check-password/{username}/{password}")
     public boolean checkPassword(@PathParam("username") String username, @PathParam("password") String password) {
-        Optional<User> user = Optional.of(userDAO.getByUsername(username));
+        Optional<User> user = Optional.fromNullable(userDAO.getByUsername(username));
         if (user.isPresent() && user.get().getPassword().equals(password)) {
             return true;
         }
@@ -79,6 +79,7 @@ public class UserResource {
                     @QueryParam("password") Optional<String> password,
                     @QueryParam("username") Optional<String> username,
                     @QueryParam("phone") Optional<Integer> phone) {
+
         if (name.isPresent()) userDAO.setName(id, name.get());
         if (email.isPresent()) userDAO.setEmail(id, email.get());
         if (password.isPresent()) userDAO.setPassword(id, password.get());
