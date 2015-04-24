@@ -616,7 +616,7 @@ app.controller("settingController", function($scope, $http, $location){
             username : $scope.username,
             phone : $scope.phone
         };
-        var url = 'http://129.21.61.152:8080/users?'+$scope.uId+'name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
+        var url = 'http://129.21.61.152:8080/users/'+$scope.uId+'?name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
         console.log("url is: " + url);
 
         $http.put(url).
