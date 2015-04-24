@@ -24,19 +24,58 @@
     </div>
 </nav>
 
-<div id="leftSide">
-    <h3>Create New Account</h3>
-    <form  novalidate class="simple-form">
-       Full Name: <input type="text" ng-model="namE" placeholder="Enter Name Here"/><br /><br />
-       Email: <input type="text" ng-model="email" placeholder="Enter Email Here" /><br /><br />
-       Username: <input type="text" ng-model="username" placeholder="Enter Username Here" /><br /><br />
-       Password: <input type="password" ng-model="password" placeholder="Enter Password Here" /><br /><br />
-       Phone: <input type="text" ng-model="phone" placeholder="Enter Mobile Phone Here" /><br /><br />
+<div class="container">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h3>Create New Account</h3>
+        <form  novalidate class="form-horizontal">
+            <div class="form-group">
+                <label for="namE" class="col-sm-3 control-label">Full Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="namE"  ng-model="namE" placeholder="Enter Name Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-8">
+                    <input type="email" class="form-control" id="email"  ng-model="email" placeholder="Enter Email Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="username"  ng-model="username" placeholder="Enter Username Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" id="password"  ng-model="password" placeholder="Enter Password Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-sm-3 control-label">Phone</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="phone"  ng-model="phone" placeholder="Enter Phone Number Here">
+                </div>
+            </div>
+           <!--Full Name: <input type="text" ng-model="namE" placeholder="Enter Name Here"/><br /><br />
+           Email: <input type="text" ng-model="email" placeholder="Enter Email Here" /><br /><br />
+           Username: <input type="text" ng-model="username" placeholder="Enter Username Here" /><br /><br />
+           Password: <input type="password" ng-model="password" placeholder="Enter Password Here" /><br /><br />
+           Phone: <input type="text" ng-model="phone" placeholder="Enter Mobile Phone Here" /><br /><br />-->
 
-    </form>
+        </form>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        <input type="button" class="btn btn-success"ng-click="createNewAcct()" value="Create Account" />
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="col-md-3"></div>
 </div>
 <div >
-    <input id="createAcct" type="button" ng-click="createNewAcct()" value="Create Account" />
+
 </div>
 </body>
 </html>
