@@ -52,6 +52,11 @@ Home
 .nav-tabs, .nav-pills {
     text-align:center;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
 /***************
 My Prescriptions
 ***************/
@@ -96,7 +101,6 @@ My Prescriptions
 
 .prescriptionDaySelector .dayList label {
     font-weight: normal;
-    cursor: pointer;
 }
 
 .dayList, .dayList li {
@@ -137,4 +141,19 @@ My Prescriptions
 .prescriptionBox {
     min-width: 50%;
     text-align: left;
+}
+
+.addButton {
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
+.addButton a {
+    font-size: 2em;
+    color: black;
+}
+
+.editControls {
+    float: right;
 }

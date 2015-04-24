@@ -20,9 +20,9 @@ public interface UserDAO {
     @SqlQuery("SELECT * FROM users")
     public List<User> getAll();
 
-    @SqlUpdate("INSERT INTO users (name, password) VALUES (:name, :password)")
+    @SqlUpdate("INSERT INTO users (name, username, password, email, phone) VALUES (:name, :username, :password, :email, :phone)")
     @GetGeneratedKeys
-    public int insert(@Bind("name") String name, @Bind("password") String password);
+    public int insert(@Bind("name") String name, @Bind("username") String username, @Bind("password") String password, @Bind("email") String email, @Bind("phone") int phone);
 
     @SqlQuery("SELECT * FROM users WHERE id = :id LIMIT 1")
     public User get(@Bind("id") int id);
@@ -30,6 +30,6 @@ public interface UserDAO {
     @SqlUpdate("DELETE FROM users WHERE id = :id LIMIT 1")
     public void delete(@Bind("id") int id);
 
-    @SqlQuery("SELECT * FROM users WHERE name = :name")
-    public User get(@Bind("name") String name);
+    @SqlQuery("SELECT * FROM users WHERE username = :username")
+    public User getByUsername(@Bind("username") String username);
 }
