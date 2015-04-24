@@ -49,4 +49,10 @@ public class PillEventResource {
         if (hour.isPresent()) pillEventDAO.setHour(id, hour.get());
         if (minute.isPresent()) pillEventDAO.setMinute(id, minute.get());
     }
+
+    @GET
+    @Path("/-/by-prescriptionId/{prescriptionId}")
+    public List<PillEvent> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
+        return pillEventDAO.getAllByPrescriptionId(prescriptionId);
+    }
 }
