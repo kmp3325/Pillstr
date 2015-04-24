@@ -35,7 +35,7 @@
 <div class="prescriptions">
     <div class="prescription" ng-repeat="prescription in prescriptions">
         <div class="remind">
-            <input type="checkbox" ng-model="prescription.remind"/>
+            <input type="checkbox" ng-model="prescription.remind" ng-click="toggleRemind(prescription)"/>
         </div>
         <div class="prescriptionBox">
             <div class="prescriptionTitleBar">
@@ -81,9 +81,15 @@
                         <input type="time" value="{{getTime(event)}}" ng-disabled="!prescription.editing"/>
                     </div>
                 </div>
+                <a href="#" onclick="return false;" ng-click="addEvent(prescription)" ng-show="prescription.editing">
+                    <!--<span class="glyphicon glypicon-plus"></span>-->Add a Reminder
+                </a>
                 <div class="prescriptionDescription">
                     <textarea ng-model="prescription.notes" ng-disabled="!prescription.editing" style="width:100%;"></textarea>
                 </div>
+                <input class="btn btn-danger" type="button" value="Delete" style="float:right" ng-show="prescription.editing && !confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = true">
+                <input class="btn btn-default" type="button" value="Don't Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = false">
+                <input class="btn btn-danger" type="button" value="Really Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="deletePrescription(prescription)">
             </div>
         </div>
     </div>

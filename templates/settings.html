@@ -27,6 +27,25 @@
         </div>
     </div>
 </nav>
-<h3>Settings page</h3>
+
+<div id="title">
+    <h3>Settings</h3>
+    <div id="leftSide">
+        <form  novalidate class="simple-form">
+            Full Name: <input type="text" ng-model="namE" placeholder="Enter Name Here"/><br /><br />
+            Email: <input type="text" ng-model="email" placeholder="Enter Email Here" /><br /><br />
+            Username: <input type="text" ng-model="username" placeholder="Enter Username Here" /><br /><br />
+            Password: <input type="password" ng-model="password" placeholder="Enter Password Here" /><br /><br />
+            Phone: <input type="text" ng-model="phone" placeholder="Enter Mobile Phone Here" /><br /><br />
+
+        </form>
+    </div>
+    <h4 id = "save" ng-if='saved == true'>*New settings have been saved.</h4>
+</div>
+    <input id="cancelSettings" type="button" ng-click="cancelSettings()" value="Cancel" />
+    <input id="saveAccountSettings" type="button" ng-click="saveAcct()" value="Save Settings" />
+
+    <input id="deleteAcct" type="button" ng-click="deleteAcct()" value="Delete Account" />
+
 </body>
 </html>

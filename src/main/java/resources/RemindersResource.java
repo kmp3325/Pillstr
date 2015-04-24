@@ -1,6 +1,8 @@
 package resources;
 
+import com.google.common.base.Optional;
 import data.RemindersDAO;
+import logic.RemindersHandler;
 import models.Reminder;
 
 import javax.inject.Inject;
@@ -16,10 +18,12 @@ import java.util.List;
 public class RemindersResource {
 
     private RemindersDAO remindersDAO;
+    private RemindersHandler remindersHandler;
 
     @Inject
-    public RemindersResource(RemindersDAO remindersDAO) {
+    public RemindersResource(RemindersDAO remindersDAO, RemindersHandler remindersHandler) {
         this.remindersDAO = remindersDAO;
+        this.remindersHandler = remindersHandler;
     }
 
     @GET
@@ -41,12 +45,33 @@ public class RemindersResource {
 
     @POST
     public int post(@QueryParam("prescriptionId") int prescriptionId, @QueryParam("taken") boolean taken, @QueryParam("time") long time) {
-        return remindersDAO.insert(prescriptionId, taken, time);
+        return remindersDAO.insert(prescriptionId, taken, RemindersHandler.parseTime(time));
     }
 
     @GET
     @Path("/-/by-prescriptionId/{prescriptionId}")
-    public List<Reminder> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
+    public List<Reminder> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId, @QueryParam("time") Optional<Long> time, @QueryParam("year") Optional<Integer> year, @QueryParam("month") Optional<Integer> month, @QueryParam("date") Optional<Integer> date) {
+        if (time.isPresent()) {
+            return remindersHandler.generateReminders(prescriptionId, time.get());
+        }
+        if (year.isPresent() && month.isPresent() && date.isPresent()) {
+            return remindersHandler.generateReminders(prescriptionId, year.get(), month.get(), date.get());
+        }
+
         return remindersDAO.getByPrescriptionId(prescriptionId);
+    }
+    @DELETE
+    @Path("/{id}/reminders-past-time/{time}")
+    public void deletePastTime(@PathParam("id") int id, @PathParam("time") long time) {
+        remindersHandler.deletePastTime(id, time);
+    }
+    @DELETE
+    @Path("/-/by-prescriptionId/{prescriptionId}")
+    public void deleteByPrescriptionId(@PathParam("prescriptionId") int prescriptionId, @QueryParam("time") Optional<Long> time) {
+        if (time.isPresent()) {
+            remindersHandler.deletePastTime(prescriptionId, time.get());
+        } else {
+            remindersDAO.deleteByPrescriptionId(prescriptionId);
+        }
     }
 }
