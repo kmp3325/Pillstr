@@ -638,13 +638,13 @@ app.controller("settingController", function($scope, $http, $location){
             username : $scope.username,
             phone : $scope.phone
         };
-        var url = 'http://129.21.61.152:8080/users?name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
+        var url = 'http://129.21.61.152:8080/users/'+$scope.uId+'?name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
         console.log("url is: " + url);
 
-        $http.post(url).
+        $http.put(url).
             success(function(data) {
                 $scope.saved = true;
-                $scope.deleteAcct();
+               // $scope.deleteAcct();
             }).
             error(function(data) {
                 console.log("Error occurred in saving settings.");
