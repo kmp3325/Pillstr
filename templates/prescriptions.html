@@ -48,7 +48,7 @@
                     <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="edit(prescription)">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <input type="button" value="Save" ng-if="isEditing(prescription)" />
+                    <input type="button" value="Save" ng-if="isEditing(prescription)" ng-click="saveEdit(prescription)"/>
                     <input type="button" value="Cancel" ng-if="isEditing(prescription)" ng-click="cancelEdit(prescription)" />
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="prescriptionDescription">
-
+                    <textarea ng-model="prescription.notes" ng-disabled="!prescription.editing" style="width:100%;"></textarea>
                 </div>
             </div>
         </div>

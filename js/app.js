@@ -158,12 +158,14 @@ app.controller("prescriptionController", function($scope, $http){
                                     {
                                         match = true;
                                         $scope.prescriptions[i].metaEvents[z].days.push(data2[y].day);
+                                        $scope.prescriptions[i].metaEvents[z].ids.push(data2[y].id);
                                         break;
                                     }
                                 }
                                 if(!match)
                                 {
                                     data2[y].days = [data2[y].day];
+                                    data2[y].ids = [data2[y].id];
                                     $scope.prescriptions[i].metaEvents.push(data2[y]);
                                 }
                             }
@@ -267,14 +269,58 @@ app.controller("prescriptionController", function($scope, $http){
         prescription.original = undefined;
     };
 
-    $scope.saveEdit = function(prescription, events) {
+    $scope.saveEdit = function(prescription) {
+        var parameters = {
+            name: prescription.name,
+            userId: prescription.userId,
+            displayName: prescription.displayName,
+            quantity: prescription.quantity,
+            notes: prescription.notes,
+            dosage: prescription.dosage,
+            remind: prescription.remind
+        };
 
+        console.log(parameters);
+        prescription.editing = false;
+
+        if(prescription.isNew) {
+            var data = JSON.stringify(parameters);
+
+            $http.post(apiBaseURL + 'prescriptions/', data);
+            //$http({
+            //    url: apiBaseURL + 'prescriptions',
+            //    method: 'POST',
+            //    params: parameters
+            //});
+        }
+
+        else {
+            $http({
+                url: apiBaseURL + 'prescriptions/' + prescription.id,
+                method: 'PUT',
+                params: parameters
+            });
+            //$http.put(apiBaseURL + 'prescriptions/' + prescription.id, {params: JSON.stringify(parameters)})
+            //    .success(function() {
+            //        console.log("PUT of prescription successful");
+            //    })
+            //    .error(function() {
+            //        console.log("PUT of prescription unsuccessful");
+            //    });
+        }
     };
 
     $scope.addPrescription = function() {
         var newPrescription = {
             isNew: true,
-            editing: true
+            editing: true,
+            name: '',
+            userId: userId,
+            displayName: '',
+            quantity: 0,
+            notes: '',
+            dosage: 0,
+            remind: true
         };
         $scope.prescriptions.push(newPrescription);
     }
