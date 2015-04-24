@@ -1,5 +1,6 @@
 package resources;
 
+import com.google.common.base.Optional;
 import data.UserDAO;
 import logic.RemindersHandler;
 import models.Reminder;
@@ -8,9 +9,7 @@ import models.User;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by keegan on 4/20/15.
@@ -67,8 +66,23 @@ public class UserResource {
     }
 
     @GET
-    @Path("/{userId}/all-reminders-for-entire-week/{year}/{month}/{date}")
-    public List<Reminder> getAllReminders(@PathParam("userId") int userId, @PathParam("year") int year, @PathParam("month") int month, @PathParam("date") int date) {
-        return remindersHandler.getAllRemindersByUserId(userId, year, month, date);
+    @Path("/{id}/all-reminders-for-entire-week/{year}/{month}/{date}")
+    public List<Reminder> getAllReminders(@PathParam("id") int id, @PathParam("year") int year, @PathParam("month") int month, @PathParam("date") int date) {
+        return remindersHandler.getAllRemindersByUserId(id, year, month, date);
+    }
+
+    @PUT
+    @Path("/{id}")
+    public void put(@PathParam("id") int id,
+                    @QueryParam("name") Optional<String> name,
+                    @QueryParam("email") Optional<String> email,
+                    @QueryParam("password") Optional<String> password,
+                    @QueryParam("username") Optional<String> username,
+                    @QueryParam("phone") Optional<Integer> phone) {
+        if (name.isPresent()) userDAO.setName(id, name.get());
+        if (email.isPresent()) userDAO.setEmail(id, email.get());
+        if (password.isPresent()) userDAO.setPassword(id, password.get());
+        if (username.isPresent()) userDAO.setUsername(id, username.get());
+        if (phone.isPresent()) userDAO.setPhone(id, phone.get());
     }
 }

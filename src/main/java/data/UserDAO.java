@@ -32,4 +32,19 @@ public interface UserDAO {
 
     @SqlQuery("SELECT * FROM users WHERE username = :username")
     public User getByUsername(@Bind("username") String username);
+
+    @SqlUpdate("UPDATE users SET name = :name WHERE id = :id")
+    void setName(int id, String name);
+
+    @SqlUpdate("UPDATE users SET email = :email WHERE id = :id")
+    void setEmail(int id, String email);
+
+    @SqlUpdate("UPDATE users SET password = :password WHERE id = :id")
+    void setPassword(int id, String password);
+
+    @SqlUpdate("UPDATE users SET username = :username WHERE id = :id")
+    void setUsername(int id, String username);
+
+    @SqlUpdate("UPDATE users SET phone = :phone WHERE id = :id")
+    void setPhone(int id, int phone);
 }
