@@ -1,4 +1,4 @@
-#title{
+#login{
     text-align: center;
 }
 
@@ -59,6 +59,32 @@
     -ms-user-select: none;
     user-select: none;
 }
+/***************
+Home
+***************/
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    zoom:1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+}
+
+.clickable {
+    cursor: pointer;
+}
 
 /***************
 My Prescriptions
@@ -104,7 +130,6 @@ My Prescriptions
 
 .prescriptionDaySelector .dayList label {
     font-weight: normal;
-    cursor: pointer;
 }
 
 .dayList, .dayList li {
@@ -145,4 +170,19 @@ My Prescriptions
 .prescriptionBox {
     min-width: 50%;
     text-align: left;
+}
+
+.addButton {
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
+.addButton a {
+    font-size: 2em;
+    color: black;
+}
+
+.editControls {
+    float: right;
 }

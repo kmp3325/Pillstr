@@ -6,27 +6,70 @@
 </head>
 <body>
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="glyphicon glyphicon-option-vertical" ></span>
-            </button>
-            <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
-            <a class="navbar-brand" href="#/home">Pillstr</a>
-        </div>
+    <div class="container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-option-vertical" ></span>
+                </button>
+                <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
+                <a class="navbar-brand" href="#/home">Pillstr</a>
+            </div>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/home" data-toggle="collapse" data-target="#hamburger">Home</a></li>
-                <li><a href="#/prescriptions" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>
-                <li><a href="#/settings" data-toggle="collapse" data-target="#hamburger">Settings</a></li>
-                <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Sign Out</a></li>
-            </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/home" data-toggle="collapse" data-target="#hamburger">Home</a></li>
+                    <li><a href="#/prescriptions" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>
+                    <li><a href="#/settings" data-toggle="collapse" data-target="#hamburger">Settings</a></li>
+                    <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Sign Out</a></li>
+                </ul>
+            </div>
         </div>
+        <div class="col-md-3"></div>
     </div>
 </nav>
+<div class="container">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h3 class="text-center"><span class="label label-default">Home</span></h3>
+        <tabset>
+            <tab ng-repeat="day in days" heading="{{day.display}}" active="tab.active" disabled="tab.disabled">
+                <div class="row vcenter" ng-repeat="reminder in reminders" ng-if="reminder.day == day.val" >
 
-<h3>Home page</h3>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <label><input type="checkbox" value="{{reminder.id}}" ng-model="reminder.taken"/>Took</label>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <accordion close-others=false >
+                            <accordion-group is-open=status.open>
+                                <accordion-heading>
+                                    <span class="pillImage">
+                                        <img src="http://placehold.it/30x30" class="img-rounded"/>
+                                    </span>
+                                    <span class="reminderQuantityDisplay">
+                                        x{{reminder.quantity}}
+                                    </span>
+                                    <span class="reminderName">
+                                        {{reminder.displayName}}
+                                    </span>
+                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open, 'glyphicon-chevron-down': !status.open}"></i>
+                                </accordion-heading>
+                                <p>{{reminder.remaining}} of this prescription remains
+                                    <span ng-if="reminder.remaining <= 10" class="glyphicon glyphicon-warning-sign"></span>
+                                </p>
+                                <textarea class="form-control" rows="3" readonly>{{reminder.notes}}</textarea>
+                            </accordion-group>
+                        </accordion>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+    <div class="col-md-3"></div>
+</div>
 </body>
 </html>
