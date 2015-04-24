@@ -32,13 +32,16 @@
 </nav>
 
 <!--<h3>Prescriptions page</h3>-->
-<div class="prescriptions">
-    <div class="prescription" ng-repeat="prescription in prescriptions">
-        <div class="remind">
-            <input type="checkbox" ng-model="prescription.remind" ng-click="toggleRemind(prescription)"/>
-        </div>
-        <div class="prescriptionBox">
-            <div class="prescriptionTitleBar">
+<div class="container">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="prescriptions">
+            <div class="prescription" ng-repeat="prescription in prescriptions">
+                <div class="remind">
+                    <input type="checkbox" ng-model="prescription.remind" ng-click="toggleRemind(prescription)"/>
+                </div>
+                <div class="prescriptionBox">
+                    <div class="prescriptionTitleBar">
                 <span class="pillImage">
                     <img src="http://placehold.it/200x200" style="width:1em; height:1em;"/>
                 </span>
@@ -48,56 +51,62 @@
                 <span class="prescriptionName">
                     <input type="text" ng-model="prescription.displayName" ng-disabled="!prescription.editing"/>
                 </span>
-                <div class="editControls">
-                    <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="edit(prescription)">
-                        <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-                    <input type="button" value="Save" ng-if="isEditing(prescription)" ng-click="saveEdit(prescription)"/>
-                    <input type="button" value="Cancel" ng-if="isEditing(prescription)" ng-click="cancelEdit(prescription)" />
-                </div>
-            </div>
-            <div class="prescriptionContentBox">
-                <div class="quantityControl">
-                    <input type="number" ng-model="prescription.quantity" ng-disabled="!prescription.editing"> remaining
-                </div>
-                <div class="quantityControl">
-                    Take <input type="number" ng-model="prescription.dosage" ng-disabled="!prescription.editing"/> each time
-                </div>
-                <div class="event" ng-repeat="event in prescription.metaEvents">
-                    <div class="prescriptionDaySelector">
-                        Remind me to take on:
-                        <ul class="dayList">
-                            <li ng-repeat="day in days">
-                                <label ng-class="{'selected': isDayChecked(event, day), 'clickable': prescription.editing}" class="noSelect">
-                                    {{day.display}}
-                                    <input type="checkbox" value="{{day.val}}" name="days[]" ng-click="toggleDay(event, day)" ng-disabled="!prescription.editing"/>
-                                </label>
-                            </li>
-                        </ul>
+                        <div class="editControls">
+                            <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="edit(prescription)">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                            <input type="button" value="Save" ng-if="isEditing(prescription)" ng-click="saveEdit(prescription)"/>
+                            <input type="button" value="Cancel" ng-if="isEditing(prescription)" ng-click="cancelEdit(prescription)" />
+                        </div>
                     </div>
-                    <div class="prescriptionTimeSelector">
-                        Remind to take at:
-                        <input type="time" ng-model="event.time" ng-disabled="!prescription.editing" />
+                    <div class="prescriptionContentBox">
+                        <div class="quantityControl">
+                            <input type="number" ng-model="prescription.quantity" ng-disabled="!prescription.editing"> remaining
+                        </div>
+                        <div class="quantityControl">
+                            Take <input type="number" ng-model="prescription.dosage" ng-disabled="!prescription.editing"/> each time
+                        </div>
+                        <div class="event" ng-repeat="event in prescription.metaEvents">
+                            <div class="prescriptionDaySelector">
+                                Remind me to take on:
+                                <ul class="dayList">
+                                    <li ng-repeat="day in days">
+                                        <label ng-class="{'selected': isDayChecked(event, day), 'clickable': prescription.editing}" class="noSelect">
+                                            {{day.display}}
+                                            <input type="checkbox" value="{{day.val}}" name="days[]" ng-click="toggleDay(event, day)" ng-disabled="!prescription.editing"/>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="prescriptionTimeSelector">
+                                Remind to take at:
+                                <input type="time" ng-model="event.time" ng-disabled="!prescription.editing" />
+                            </div>
+                            <a href="#" onclick="return false;" ng-show="prescription.editing" ng-click="removeEvent(prescription, event)">(remove this reminder)</a>
+                        </div>
+                        <a href="#" onclick="return false;" ng-click="addEvent(prescription)" ng-show="prescription.editing">
+                            <!--<span class="glyphicon glypicon-plus"></span>-->Add a Reminder
+                        </a>
+                        <div class="prescriptionDescription">
+                            <textarea ng-model="prescription.notes" ng-disabled="!prescription.editing" style="width:100%;"></textarea>
+                        </div>
+                        <input class="btn btn-danger" type="button" value="Delete" style="float:right" ng-show="prescription.editing && !confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = true">
+                        <input class="btn btn-default" type="button" value="Don't Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = false">
+                        <input class="btn btn-danger" type="button" value="Really Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="deletePrescription(prescription)">
                     </div>
-                    <a href="#" onclick="return false;" ng-show="prescription.editing" ng-click="removeEvent(prescription, event)">(remove this reminder)</a>
                 </div>
-                <a href="#" onclick="return false;" ng-click="addEvent(prescription)" ng-show="prescription.editing">
-                    <!--<span class="glyphicon glypicon-plus"></span>-->Add a Reminder
-                </a>
-                <div class="prescriptionDescription">
-                    <textarea ng-model="prescription.notes" ng-disabled="!prescription.editing" style="width:100%;"></textarea>
-                </div>
-                <input class="btn btn-danger" type="button" value="Delete" style="float:right" ng-show="prescription.editing && !confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = true">
-                <input class="btn btn-default" type="button" value="Don't Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="prescription.confirmingDelete = false">
-                <input class="btn btn-danger" type="button" value="Really Delete" style="float:right" ng-show="prescription.editing && confirmingDelete(prescription)" ng-click="deletePrescription(prescription)">
             </div>
         </div>
+        <footer class="footer addButton">
+            <a href="#" onclick="return false;" ng-click="addPrescription()">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </footer>
     </div>
+    <div class="col-md-3"></div>
+
+
 </div>
-<footer class="footer addButton">
-    <a href="#" onclick="return false;" ng-click="addPrescription()">
-        <span class="glyphicon glyphicon-plus"></span>
-    </a>
-</footer>
+
 </body>
 </html>

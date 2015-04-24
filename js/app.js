@@ -98,6 +98,7 @@ app.controller("accountController", function($scope, $location, $http){
             error(function(data) {
                 console.log("Error occurred in creating new account.");
                 console.log(data);
+                $scope.state = false;
             });
     }
 });

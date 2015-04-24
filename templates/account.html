@@ -5,22 +5,26 @@
     <title></title>
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="glyphicon glyphicon-option-vertical" ></span>
-            </button>
-            <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
-            <a class="navbar-brand" href="#/home">Pillstr</a>
-        </div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-option-vertical" ></span>
+                </button>
+                <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
+                <a class="navbar-brand" href="#/account">Pillstr</a>
+            </div>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Login</a></li>
-            </ul>
+            <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Login</a></li>
+                </ul>
+            </div>
         </div>
+        <div class="col-md-3"></div>
     </div>
 </nav>
 
@@ -59,6 +63,7 @@
                     <input type="text" class="form-control" id="phone"  ng-model="phone" placeholder="Enter Phone Number Here">
                 </div>
             </div>
+            <h4 id = "error" ng-if='state == false'>*Login Error. Please re-enter the correct email and password.</h4>
            <!--Full Name: <input type="text" ng-model="namE" placeholder="Enter Name Here"/><br /><br />
            Email: <input type="text" ng-model="email" placeholder="Enter Email Here" /><br /><br />
            Username: <input type="text" ng-model="username" placeholder="Enter Username Here" /><br /><br />
