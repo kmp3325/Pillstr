@@ -38,27 +38,30 @@ app.controller("loginController", function($scope, $location, $http){
     $scope.login = function(){
 
         var request={
-            email : $scope.email,
+            username : $scope.username,
             password : $scope.password
         };
         console.log(request);
 
-        $http.post('/login', request).
+        $http.get('http://129.21.61.152:8080/users/-/check-password/'+request.username+'/'+request.password+'', request).
             success(function(data) {
                 $scope.response = data;
-                $scope.response = true;
 
                 if($scope.response == true){
-
+                    sessionStorage.setItem('currUser', request.username);
                     $location.path('/home');
+                }
+                else{
+                    $scope.state = false;
+                    $scope.username = "";
+                    $scope.password = "";
                 }
             }).
             error(function(data) {
                 console.log("Error occurred in login.");
-                console.log(data);
 
                 $scope.state = false;
-                $scope.email = "";
+                $scope.username = "";
                 $scope.password = "";
             });
     }
@@ -76,19 +79,17 @@ app.controller("accountController", function($scope, $location, $http){
         var request={
             name : $scope.namE,
             email : $scope.email,
-            password : $scope.password
+            password : $scope.password,
+            username : $scope.username,
+            phone : $scope.phone
         };
-        console.log(request);
-
-        $http.post('/account', request).
+        var url = 'http://129.21.61.152:8080/users?name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
+       // console.log("url is: " + url);
+        $http.post(url).
             success(function(data) {
-                $scope.response = data;
-                $scope.response = true;
-
-                if($scope.response == true){
-                    $location.path('/home');
-                }
+                $location.path('/home');
                 sessionStorage.setItem('auth', true);
+                sessionStorage.setItem('currUser', request.username);
             }).
             error(function(data) {
                 console.log("Error occurred in creating new account.");
@@ -107,105 +108,67 @@ app.controller("homeController", function($scope){
 app.controller("prescriptionController", function($scope){
     sessionStorage.setItem('auth', true);
 
-    $scope.prescriptions = [
-        {
-            "id": 0,
-            "name": "Slovak Republic",
-            "userId": 7,
-            "displayName": "Palau",
-            "quantity": 6.2,
-            "notes": "Lorem nostrud tempor sunt sint ea cillum culpa enim culpa excepteur."
-        },
-        {
-            "id": 1,
-            "name": "Netherlands",
-            "userId": 7,
-            "displayName": "Tennessee",
-            "quantity": 3.3,
-            "notes": "Cupidatat amet reprehenderit esse culpa eiusmod dolore veniam."
-        },
-        {
-            "id": 2,
-            "name": "Togo",
-            "userId": 10,
-            "displayName": "Massachusetts",
-            "quantity": 6.2,
-            "notes": "Fugiat amet irure adipisicing do cupidatat nostrud cupidatat mollit duis enim id do deserunt."
-        },
-        {
-            "id": 3,
-            "name": "Myanmar",
-            "userId": 2,
-            "displayName": "Delaware",
-            "quantity": 9.7,
-            "notes": "Eu qui est minim proident non qui."
-        },
-        {
-            "id": 4,
-            "name": "Fiji",
-            "userId": 8,
-            "displayName": "Nebraska",
-            "quantity": 3.6,
-            "notes": "Nisi excepteur deserunt magna velit enim exercitation consectetur fugiat deserunt amet aute."
-        },
-        {
-            "id": 5,
-            "name": "Canada",
-            "userId": 6,
-            "displayName": "Utah",
-            "quantity": 0.5,
-            "notes": "Proident sit veniam eu laboris veniam ut adipisicing."
-        }
-    ];
-
-    $scope.days = [
-        {
-            name: 'Sunday',
-            display: 'Su',
-            val: 0,
-            checked: false
-        },
-        {
-            name: 'Monday',
-            display: 'Mo',
-            val: 1,
-            checked: false
-        },
-        {
-            name: 'Tuesday',
-            display: 'Tu',
-            val: 2,
-            checked: false
-        },
-        {
-            name: 'Wednesday',
-            display: 'We',
-            val: 3,
-            checked: false
-        },
-        {
-            name: 'Thursday',
-            display: 'Th',
-            val: 4,
-            checked: false
-        },
-        {
-            name: 'Friday',
-            display: 'Fr',
-            val: 5,
-            checked: false
-        },
-        {
-            name: 'Saturday',
-            display: 'Sa',
-            val: 6,
-            checked: false
-        }
-    ];
 });
 
 //Settings controller
-app.controller("settingController", function($scope){
+app.controller("settingController", function($scope, $http, $location){
     sessionStorage.setItem('auth', true);
+    var username = sessionStorage.getItem('currUser');
+    $http.get('http://129.21.61.152:8080/users/-/by-name/'+username+'').
+        success(function(data) {
+            $scope.response = data;
+            $scope.uId = $scope.response.id;
+
+            $scope.namE = $scope.response.name;
+            $scope.email = $scope.response.email;
+            $scope.username = $scope.response.username;
+            $scope.password = $scope.response.password;
+            $scope.phone = $scope.response.phone;
+        }).
+        error(function(data) {
+            console.log("Error occurred in getting user id.");
+        });
+
+    $scope.cancelSettings = function(){
+        $location.path('/home');
+    }
+
+    $scope.saved = false;
+    $scope.saveAcct = function(){
+        var request={
+            name : $scope.namE,
+            email : $scope.email,
+            password : $scope.password,
+            username : $scope.username,
+            phone : $scope.phone
+        };
+        var url = 'http://129.21.61.152:8080/users?name='+request.name+'&email='+request.email+'&password='+request.password+'&username='+request.username+'&phone='+request.phone+'';
+        console.log("url is: " + url);
+
+        $http.post(url).
+            success(function(data) {
+                $scope.saved = true;
+                $scope.deleteAcct();
+            }).
+            error(function(data) {
+                console.log("Error occurred in saving settings.");
+                console.log(data);
+            });
+        $scope.saved = true;
+    }
+
+    $scope.deleteAcct = function(){
+        $http.delete('http://129.21.61.152:8080/users/'+$scope.uId+'').
+            success(function(data) {
+                if($scope.saved == false){
+                    $location.path('/login');
+                }
+                $scope.saved = false;
+            }).
+            error(function(data) {
+                console.log("Error occurred in deleting user.");
+            });
+    }
 });
+
 

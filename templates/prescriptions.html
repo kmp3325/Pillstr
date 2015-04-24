@@ -27,8 +27,13 @@
     </div>
 </nav>
 
+<div id="addNewPrescription">
+    <input id="newPrescription" type="button" ng-click="newPrescription()" value="Add New Reminder" />
+</div>
+
 <!--<h3>Prescriptions page</h3>-->
 <div class="prescriptions">
+
     <div class="prescription" ng-repeat="prescription in prescriptions">
         <div class="remind">
             <input type="checkbox" />
@@ -71,5 +76,8 @@
         </div>
     </div>
 </div>
+
+
+
 </body>
 </html>
