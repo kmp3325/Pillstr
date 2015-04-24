@@ -108,7 +108,6 @@ app.controller("homeController", function($scope){
 app.controller("prescriptionController", function($scope, $http){
     sessionStorage.setItem('auth', true);
     //sessionStorage.getItem('userId');
-    var newPrescription = {};
     var userId = 1;
     var prescriptionUrl = apiBaseURL + 'prescriptions/' + userId;
     $scope.prescriptions = [];
@@ -255,17 +254,30 @@ app.controller("prescriptionController", function($scope, $http){
     };
 
     $scope.cancelEdit = function(prescription) {
+        if(prescription.isNew) {
+            $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
+        }
+
         prescription.editing = false;
         prescription.displayName = prescription.original.displayName;
         prescription.dosage = prescription.original.dosage;
         prescription.quantity = prescription.original.quantity;
         prescription.notes = prescription.original.notes;
+        prescription.metaEvents = prescription.original.metaEvents;
         prescription.original = undefined;
     };
 
     $scope.saveEdit = function(prescription, events) {
 
     };
+
+    $scope.addPrescription = function() {
+        var newPrescription = {
+            isNew: true,
+            editing: true
+        };
+        $scope.prescriptions.push(newPrescription);
+    }
 });
 
 //Settings controller
