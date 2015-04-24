@@ -44,6 +44,11 @@
                 <span class="prescriptionName">
                     {{prescription.displayName}}
                 </span>
+                <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="prescription.editing = true">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <input type="button" value="Save" ng-if="isEditing(prescription)" />
+                <input type="button" value="Cancel" ng-if="isEditing(prescription)" />
             </div>
             <div class="prescriptionContentBox">
                 <div class="quantityControl">
@@ -55,7 +60,7 @@
                         <li ng-repeat="day in days">
                             <label ng-class="{'selected': day.checked}" class="noSelect">
                                 {{day.display}}
-                                <input type="checkbox" value="{{day.val}}" ng-model="day.checked" />
+                                <input type="checkbox" value="{{day.val}}" />
                             </label>
                         </li>
                     </ul>
