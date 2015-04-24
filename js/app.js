@@ -108,13 +108,19 @@ app.controller("homeController", function($scope){
 app.controller("prescriptionController", function($scope, $http){
     sessionStorage.setItem('auth', true);
     //sessionStorage.getItem('userId');
+    var newPrescription = {};
     var userId = 1;
     var prescriptionUrl = apiBaseURL + 'prescriptions/' + userId;
     $scope.prescriptions = [];
     $http.get(prescriptionUrl)
         .success(function(data, status, headers, config) {
             console.log("GET: " + prescriptionUrl + " was successful");
-            if(Array.isArray(data))
+
+            if(status === 204)
+            {
+                console.log("empty result");
+            }
+            else if(Array.isArray(data))
             {
                 $scope.prescriptions = data;
             }
@@ -122,7 +128,52 @@ app.controller("prescriptionController", function($scope, $http){
             {
                 $scope.prescriptions = [data];
             }
-            console.log(data);
+
+            for(var i = 0; i < $scope.prescriptions.length; i++)
+            {
+                var reminderUrl = apiBaseURL + 'events/-/by-prescriptionId/' + $scope.prescriptions[i].id;
+                $scope.prescriptions[i].metaEvents = [];
+
+                (function(i) {
+                    $http.get(reminderUrl)
+                        .success(function(data2, status2, headers2, config2) {
+                            console.log("GET: " + reminderUrl + " successful");
+
+                            if(status === 204)
+                            {
+                                console.log("empty result");
+                                return;
+                            }
+                            else if(!Array.isArray(data2))
+                            {
+                                data2 = [data2];
+                            }
+
+                            for(var y = 0; y < data2.length; y++)
+                            {
+                                var match = false;
+                                for(var z = 0; z < $scope.prescriptions[i].metaEvents.length; z++)
+                                {
+                                    if($scope.prescriptions[i].metaEvents[z].hour == data2[y].hour &&
+                                        $scope.prescriptions[i].metaEvents[z].minutes == data2[y].minutes)
+                                    {
+                                        match = true;
+                                        $scope.prescriptions[i].metaEvents[z].days.push(data2[y].day);
+                                        break;
+                                    }
+                                }
+                                if(!match)
+                                {
+                                    data2[y].days = [data2[y].day];
+                                    $scope.prescriptions[i].metaEvents.push(data2[y]);
+                                }
+                            }
+                        })
+                        .error(function(data, status, headers, config) {
+                            console.log("GET: " + reminderUrl + " failed");
+                        });
+                })(i);
+            }
         })
         .error(function() {
             console.log("GET: " + prescriptionUrl + " error");
@@ -138,52 +189,112 @@ app.controller("prescriptionController", function($scope, $http){
 
         return prescription.editing;
     };
+    /*
+    $scope.getPrescriptionEvents = function(prescription) {
+        if(prescription.metaEvents !== undefined)
+        {
+            return prescription.metaEvents;
+        }
+        var metaEvents= [];
+        var reminderUrl = apiBaseURL + 'events/-/by-prescriptionId/' + prescription.Id;
+        $http.get(reminderUrl)
+            .success(function(data, status, headers, config) {
+                console.log("GET: " + reminderUrl + " successful");
+
+                if(status === 204)
+                {
+                    console.log("empty result");
+                    return;
+                }
+                else if(!Array.isArray(data))
+                {
+                    data = [data];
+                }
+
+                for(var i = 0; i < data.length; i++)
+                {
+                    for(var y = 0; y < metaEvents.length; y++)
+                    {
+                        if(data[i].hour == metaEvents[y].hour && data[i].minute == metaEvents[y].minute)
+                        {
+                            metaEvents[y].days.push(data[i].day);
+                            continue;
+                        }
+                        else
+                        {
+                            data[i].days = [data[i].day];
+                            metaEvents.push(data[i]);
+                            continue;
+                        }
+                    }
+                }
+
+                prescription.metaEvents = metaEvents;
+            })
+            .error(function(data, status, headers, config) {
+                console.log("GET: " + reminderUrl + " failed");
+            });
+    };*/
 
 
     $scope.days = [
         {
             name: 'Sunday',
             display: 'Su',
-            val: 0,
-            checked: false
+            val: 0
         },
         {
             name: 'Monday',
             display: 'Mo',
-            val: 1,
-            checked: false
+            val: 1
         },
         {
             name: 'Tuesday',
             display: 'Tu',
-            val: 2,
-            checked: false
+            val: 2
         },
         {
             name: 'Wednesday',
             display: 'We',
-            val: 3,
-            checked: false
+            val: 3
         },
         {
             name: 'Thursday',
             display: 'Th',
-            val: 4,
-            checked: false
+            val: 4
         },
         {
             name: 'Friday',
             display: 'Fr',
-            val: 5,
-            checked: false
+            val: 5
         },
         {
             name: 'Saturday',
             display: 'Sa',
-            val: 6,
-            checked: false
+            val: 6
         }
     ];
+
+    $scope.padTime = function(val) {
+        var str = '' + val;
+        var pad = '00';
+        return pad.substring(0, pad.length - str.length) + str;
+    };
+
+    $scope.toggleDay = function(event, day) {
+        var index = event.days.indexOf(day.val);
+        if(index >= 0) {
+            event.days.splice(index, 1);
+        }
+        else {
+            event.days.push(day.val);
+        }
+        console.log(event);
+    };
+
+    $scope.isDayChecked = function(event, day) {
+        return event.days.indexOf(day.val) >= 0;
+    }
 });
 
 //Settings controller

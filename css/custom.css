@@ -119,3 +119,19 @@ My Prescriptions
     min-width: 50%;
     text-align: left;
 }
+
+.addButton {
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
+.addButton a {
+    font-size: 2em;
+    color: black;
+}
+
+.editControls {
+    float: right;
+    padding-top: 3px;
+}

@@ -44,30 +44,35 @@
                 <span class="prescriptionName">
                     {{prescription.displayName}}
                 </span>
-                <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="prescription.editing = true">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <input type="button" value="Save" ng-if="isEditing(prescription)" />
-                <input type="button" value="Cancel" ng-if="isEditing(prescription)" />
+                <div class="editControls">
+                    <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="prescription.editing = true">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <input type="button" value="Save" ng-if="isEditing(prescription)" />
+                    <input type="button" value="Cancel" ng-if="isEditing(prescription)" />
+                </div>
             </div>
             <div class="prescriptionContentBox">
                 <div class="quantityControl">
                     Take <input type="number" ng-model="prescription.quantity" /> each time
                 </div>
-                <div class="prescriptionDaySelector">
-                    Remind to take on:
-                    <ul class="dayList">
-                        <li ng-repeat="day in days">
-                            <label ng-class="{'selected': day.checked}" class="noSelect">
-                                {{day.display}}
-                                <input type="checkbox" value="{{day.val}}" />
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="prescriptionTimeSelector">
-                    Remind to take at:
-                    <input type="time" />
+                <div class="event" ng-repeat="event in prescription.metaEvents">
+                    {{event}}
+                    <div class="prescriptionDaySelector">
+                        Remind to take on:
+                        <ul class="dayList">
+                            <li ng-repeat="day in days">
+                                <label ng-class="{'selected': isDayChecked(event, day)}" class="noSelect">
+                                    {{day.display}}
+                                    <input type="checkbox" value="{{day.val}}" name="days[]" ng-click="toggleDay(event, day)"/>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="prescriptionTimeSelector">
+                        Remind to take at:
+                        <input type="time" value="{{padTime(event.hour)}}:{{padTime(event.minute)}}"/>
+                    </div>
                 </div>
                 <div class="prescriptionDescription">
 
@@ -76,5 +81,10 @@
         </div>
     </div>
 </div>
+<footer class="footer addButton">
+    <a href="#" onclick="return false;">
+        <span class="glyphicon glyphicon-plus"></span>
+    </a>
+</footer>
 </body>
 </html>
