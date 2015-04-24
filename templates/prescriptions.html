@@ -64,9 +64,8 @@
                     Take <input type="number" ng-model="prescription.dosage" ng-disabled="!prescription.editing"/> each time
                 </div>
                 <div class="event" ng-repeat="event in prescription.metaEvents">
-                    {{event}}
                     <div class="prescriptionDaySelector">
-                        Remind to take on:
+                        Remind me to take on:
                         <ul class="dayList">
                             <li ng-repeat="day in days">
                                 <label ng-class="{'selected': isDayChecked(event, day), 'clickable': prescription.editing}" class="noSelect">
@@ -78,8 +77,9 @@
                     </div>
                     <div class="prescriptionTimeSelector">
                         Remind to take at:
-                        <input type="time" value="{{getTime(event)}}" ng-disabled="!prescription.editing"/>
+                        <input type="time" ng-model="event.time" ng-disabled="!prescription.editing" />
                     </div>
+                    <a href="#" onclick="return false;" ng-show="prescription.editing" ng-click="removeEvent(prescription, event)">(remove this reminder)</a>
                 </div>
                 <a href="#" onclick="return false;" ng-click="addEvent(prescription)" ng-show="prescription.editing">
                     <!--<span class="glyphicon glypicon-plus"></span>-->Add a Reminder
