@@ -55,4 +55,16 @@ public class PillEventResource {
     public List<PillEvent> getByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
         return pillEventDAO.getAllByPrescriptionId(prescriptionId);
     }
+
+    @DELETE
+    @Path("{id}")
+    public void delete(@PathParam("id") int id) {
+        pillEventDAO.delete(id);
+    }
+
+    @DELETE
+    @Path("/-/by-prescriptionId/{prescriptionId}")
+    public void deleteByPrescriptionId(@PathParam("prescriptionId") int prescriptionId) {
+        pillEventDAO.deleteByPrescriptionId(prescriptionId);
+    }
 }

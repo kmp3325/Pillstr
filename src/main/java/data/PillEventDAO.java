@@ -40,4 +40,10 @@ public interface PillEventDAO {
 
     @SqlQuery("SELECT * FROM events WHERE prescriptionId = :prescriptionId AND day = :day")
     public List<PillEvent> getAllByPrescriptionIdAndDay(@Bind("prescriptionId") int prescriptionId, @Bind("day") int day);
+
+    @SqlUpdate("DELETE FROM events WHERE id = :id LIMIT 1")
+    public void delete(@Bind("id") int id);
+
+    @SqlUpdate("DELETE FROM events WHERE prescriptionId = :prescriptionId")
+    public void deleteByPrescriptionId(@Bind("prescriptionId") int prescriptionId);
 }

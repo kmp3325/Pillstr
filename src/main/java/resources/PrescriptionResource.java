@@ -2,9 +2,7 @@ package resources;
 
 import com.google.common.base.Optional;
 import data.PrescriptionDAO;
-import logic.RemindersHandler;
 import models.Prescription;
-import models.Reminder;
 
 import javax.inject.Inject;
 import javax.ws.rs.Path;
@@ -26,12 +24,10 @@ import java.util.List;
 public class PrescriptionResource {
 
     private PrescriptionDAO prescriptionDAO;
-    private RemindersHandler remindersHandler;
 
     @Inject
-    public PrescriptionResource(PrescriptionDAO prescriptionDAO, RemindersHandler remindersHandler) {
+    public PrescriptionResource(PrescriptionDAO prescriptionDAO) {
         this.prescriptionDAO = prescriptionDAO;
-        this.remindersHandler = remindersHandler;
     }
 
     @GET
@@ -89,17 +85,5 @@ public class PrescriptionResource {
         if (notes.isPresent()) prescriptionDAO.setNotes(id, notes.get());
         if (dosage.isPresent()) prescriptionDAO.setDosage(id, dosage.get());
         if (remind.isPresent()) prescriptionDAO.setRemind(id, remind.get());
-    }
-
-    @GET
-    @Path("/{id}/reminders-for-date/{time}")
-    public List<Reminder> getByTime(@PathParam("id") int id, @PathParam("time") long time) {
-        return remindersHandler.generateReminders(id, time);
-    }
-
-    @DELETE
-    @Path("/{id}/reminders-past-time/{time}")
-    public void deletePastTime(@PathParam("id") int id, @PathParam("time") long time) {
-        remindersHandler.deletePastTime(id, time);
     }
 }

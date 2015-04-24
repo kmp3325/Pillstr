@@ -29,10 +29,10 @@ public interface PrescriptionDAO {
     @GetGeneratedKeys
     public int insert(@Bind("name") String name, @Bind("userId") int userId, @Bind("displayName") String displayName, @Bind("quantity") double quantity, @Bind("notes") String notes, @Bind("dosage") double dosage, @Bind("remind") boolean remind);
 
-    @SqlUpdate("SELECT * FROM prescriptions WHERE userId = :userId")
+    @SqlQuery("SELECT * FROM prescriptions WHERE userId = :userId")
     public List<Prescription> getByUserId(@Bind("userId") int userId);
 
-    @SqlUpdate("SELECT * FROM prescriptions WHERE userId = :userId AND remind = :remind")
+    @SqlQuery("SELECT * FROM prescriptions WHERE userId = :userId AND remind = :remind")
     public List<Prescription> getByUserIdAndRemind(@Bind("userId") int userId, @Bind("remind") boolean remind);
 
     @SqlUpdate("DELETE FROM prescriptions WHERE userId = :userId")
