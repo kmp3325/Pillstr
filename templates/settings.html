@@ -6,28 +6,79 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="glyphicon glyphicon-option-vertical" ></span>
-            </button>
-            <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
-            <a class="navbar-brand" href="#/home">Pillstr</a>
-        </div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-option-vertical" ></span>
+                </button>
+                <span class="glyphicon glyphicon-home navbar-brand" style="padding: 13px 15px 0 0;" ></span>
+                <a class="navbar-brand" href="#/home">Pillstr</a>
+            </div>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/home" data-toggle="collapse" data-target="#hamburger">Home</a></li>
-                <li><a href="#/prescriptions" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>
-                <li><a href="#/settings" data-toggle="collapse" data-target="#hamburger">Settings</a></li>
-                <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Sign Out</a></li>
-            </ul>
+            <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/home" data-toggle="collapse" data-target="#hamburger">Home</a></li>
+                    <li><a href="#/prescriptions" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>
+                    <li><a href="#/settings" data-toggle="collapse" data-target="#hamburger">Settings</a></li>
+                    <li><a href="#/login" data-toggle="collapse" data-target="#hamburger">Sign Out</a></li>
+                </ul>
+            </div>
         </div>
+        <div class="col-md-3"></div>
     </div>
 </nav>
 
+<div class="container">
+    <h3 class="text-center">Settings</h3>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form  novalidate class="form-horizontal">
+            <div class="form-group">
+                <label for="namE" class="col-sm-3 control-label">Full Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="namE"  ng-model="namE" placeholder="Enter Name Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-8">
+                    <input type="email" class="form-control" id="email"  ng-model="email" placeholder="Enter Email Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="username"  ng-model="username" placeholder="Enter Username Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" id="password"  ng-model="password" placeholder="Enter Password Here">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-sm-3 control-label">Phone</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="phone"  ng-model="phone" placeholder="Enter Phone Number Here">
+                </div>
+            </div>
+        </form>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <input class="btn btn-default" type="button" ng-click="cancelSettings()" value="Cancel" />
+            <input class="btn btn-success" type="button" ng-click="saveAcct()" value="Save Settings" />
+            <input class="btn btn-danger" type="button" ng-click="deleteAcct()" value="Delete Account" />
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<!--
 <div id="title">
     <h3>Settings</h3>
     <div id="leftSide">
@@ -46,6 +97,6 @@
     <input id="saveAccountSettings" type="button" ng-click="saveAcct()" value="Save Settings" />
 
     <input id="deleteAcct" type="button" ng-click="deleteAcct()" value="Delete Account" />
-
+-->
 </body>
 </html>
