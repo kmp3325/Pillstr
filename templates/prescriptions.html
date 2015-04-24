@@ -31,7 +31,7 @@
 <div class="prescriptions">
     <div class="prescription" ng-repeat="prescription in prescriptions">
         <div class="remind">
-            <input type="checkbox" />
+            <input type="checkbox" ng-model="prescription.remind"/>
         </div>
         <div class="prescriptionBox">
             <div class="prescriptionTitleBar">
@@ -39,22 +39,25 @@
                     <img src="http://placehold.it/200x200" style="width:1em; height:1em;"/>
                 </span>
                 <span class="prescriptionQuantityDisplay">
-                    x{{prescription.quantity}}
+                    x{{prescription.dosage}}
                 </span>
                 <span class="prescriptionName">
-                    {{prescription.displayName}}
+                    <input type="text" ng-model="prescription.displayName" ng-disabled="!prescription.editing"/>
                 </span>
                 <div class="editControls">
-                    <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="prescription.editing = true">
+                    <a href="#" onclick="return false;" ng-if="!(isEditing(prescription))" ng-click="edit(prescription)">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
                     <input type="button" value="Save" ng-if="isEditing(prescription)" />
-                    <input type="button" value="Cancel" ng-if="isEditing(prescription)" />
+                    <input type="button" value="Cancel" ng-if="isEditing(prescription)" ng-click="cancelEdit(prescription)" />
                 </div>
             </div>
             <div class="prescriptionContentBox">
                 <div class="quantityControl">
-                    Take <input type="number" ng-model="prescription.quantity" /> each time
+                    <input type="number" ng-model="prescription.quantity" ng-disabled="!prescription.editing"> remaining
+                </div>
+                <div class="quantityControl">
+                    Take <input type="number" ng-model="prescription.dosage" ng-disabled="!prescription.editing"/> each time
                 </div>
                 <div class="event" ng-repeat="event in prescription.metaEvents">
                     {{event}}
@@ -62,16 +65,16 @@
                         Remind to take on:
                         <ul class="dayList">
                             <li ng-repeat="day in days">
-                                <label ng-class="{'selected': isDayChecked(event, day)}" class="noSelect">
+                                <label ng-class="{'selected': isDayChecked(event, day), 'clickable': prescription.editing}" class="noSelect">
                                     {{day.display}}
-                                    <input type="checkbox" value="{{day.val}}" name="days[]" ng-click="toggleDay(event, day)"/>
+                                    <input type="checkbox" value="{{day.val}}" name="days[]" ng-click="toggleDay(event, day)" ng-disabled="!prescription.editing"/>
                                 </label>
                             </li>
                         </ul>
                     </div>
                     <div class="prescriptionTimeSelector">
                         Remind to take at:
-                        <input type="time" value="{{padTime(event.hour)}}:{{padTime(event.minute)}}"/>
+                        <input type="time" value="{{padTime(event.hour)}}:{{padTime(event.minute)}}" ng-disabled="!prescription.editing"/>
                     </div>
                 </div>
                 <div class="prescriptionDescription">

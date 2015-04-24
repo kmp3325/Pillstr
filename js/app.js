@@ -189,53 +189,6 @@ app.controller("prescriptionController", function($scope, $http){
 
         return prescription.editing;
     };
-    /*
-    $scope.getPrescriptionEvents = function(prescription) {
-        if(prescription.metaEvents !== undefined)
-        {
-            return prescription.metaEvents;
-        }
-        var metaEvents= [];
-        var reminderUrl = apiBaseURL + 'events/-/by-prescriptionId/' + prescription.Id;
-        $http.get(reminderUrl)
-            .success(function(data, status, headers, config) {
-                console.log("GET: " + reminderUrl + " successful");
-
-                if(status === 204)
-                {
-                    console.log("empty result");
-                    return;
-                }
-                else if(!Array.isArray(data))
-                {
-                    data = [data];
-                }
-
-                for(var i = 0; i < data.length; i++)
-                {
-                    for(var y = 0; y < metaEvents.length; y++)
-                    {
-                        if(data[i].hour == metaEvents[y].hour && data[i].minute == metaEvents[y].minute)
-                        {
-                            metaEvents[y].days.push(data[i].day);
-                            continue;
-                        }
-                        else
-                        {
-                            data[i].days = [data[i].day];
-                            metaEvents.push(data[i]);
-                            continue;
-                        }
-                    }
-                }
-
-                prescription.metaEvents = metaEvents;
-            })
-            .error(function(data, status, headers, config) {
-                console.log("GET: " + reminderUrl + " failed");
-            });
-    };*/
-
 
     $scope.days = [
         {
@@ -294,7 +247,25 @@ app.controller("prescriptionController", function($scope, $http){
 
     $scope.isDayChecked = function(event, day) {
         return event.days.indexOf(day.val) >= 0;
-    }
+    };
+
+    $scope.edit = function(prescription) {
+        prescription.editing = true;
+        prescription.original = JSON.parse(JSON.stringify(prescription));
+    };
+
+    $scope.cancelEdit = function(prescription) {
+        prescription.editing = false;
+        prescription.displayName = prescription.original.displayName;
+        prescription.dosage = prescription.original.dosage;
+        prescription.quantity = prescription.original.quantity;
+        prescription.notes = prescription.original.notes;
+        prescription.original = undefined;
+    };
+
+    $scope.saveEdit = function(prescription, events) {
+
+    };
 });
 
 //Settings controller

@@ -77,7 +77,6 @@ My Prescriptions
 
 .prescriptionDaySelector .dayList label {
     font-weight: normal;
-    cursor: pointer;
 }
 
 .dayList, .dayList li {
