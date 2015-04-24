@@ -296,6 +296,7 @@ app.controller("prescriptionController", function($scope, $http){
                                 {
                                     data2[y].days = [data2[y].day];
                                     data2[y].ids = [data2[y].id];
+                                    data2[y].time = new Date(1970, 0, 1, data2[y].hour, data2[y].minute, 0);
                                     $scope.prescriptions[i].metaEvents.push(data2[y]);
                                 }
                             }
@@ -395,13 +396,19 @@ app.controller("prescriptionController", function($scope, $http){
             $scope.prescriptions.splice($scope.prescriptions.indexOf(prescription), 1);
         }
 
-        prescription.editing = false;
-        prescription.displayName = prescription.original.displayName;
-        prescription.dosage = prescription.original.dosage;
-        prescription.quantity = prescription.original.quantity;
-        prescription.notes = prescription.original.notes;
-        prescription.metaEvents = prescription.original.metaEvents;
-        prescription.original = undefined;
+        else {
+            for(var i = 0; i < prescription.original.metaEvents.length; i++) {
+                prescription.original.metaEvents[i].time = new Date(1970, 0, 1, prescription.original.metaEvents[i].hour, prescription.original.metaEvents[i].minute, 0);
+            }
+
+            prescription.editing = false;
+            prescription.displayName = prescription.original.displayName;
+            prescription.dosage = prescription.original.dosage;
+            prescription.quantity = prescription.original.quantity;
+            prescription.notes = prescription.original.notes;
+            prescription.metaEvents = prescription.original.metaEvents;
+            prescription.original = undefined;
+        }
     };
 
     $scope.saveEdit = function(prescription) {
@@ -437,6 +444,7 @@ app.controller("prescriptionController", function($scope, $http){
                 params: parameters,
                 data: parameters
             });
+
         }
 
         else {
@@ -452,6 +460,35 @@ app.controller("prescriptionController", function($scope, $http){
                 console.log("PUT of prescription unsuccessful");
             });
         }
+
+        $http({
+            url: apiBaseURL + 'events/-/by-prescriptionId/' + prescription.id,
+            method: 'DELETE'
+        }).success(function() {
+
+            for (var i = 0; i < prescription.metaEvents.length; i++) {
+                for (var y = 0; y < prescription.metaEvents[i].days.length; y++) {
+                    var eventData = {
+                        prescriptionId: prescription.id,
+                        day: prescription.metaEvents[i].days[y],
+                        hour: prescription.metaEvents[i].time.getHours(),
+                        minute: prescription.metaEvents[i].time.getMinutes()
+                    };
+                    console.log(data);
+
+                    $http({
+                        url: apiBaseURL + 'events',
+                        method: 'POST',
+                        data: eventData,
+                        params: eventData
+                    }).success(function () {
+                        console.log('POST of events successful');
+                    }).error(function () {
+                        console.log('POST of events unsuccessful');
+                    })
+                }
+            }
+        });
     };
 
     $scope.addPrescription = function() {
@@ -464,7 +501,8 @@ app.controller("prescriptionController", function($scope, $http){
             quantity: 0,
             notes: '',
             dosage: 0,
-            remind: true
+            remind: true,
+            metaEvents: []
         };
         $scope.prescriptions.push(newPrescription);
     };
@@ -474,6 +512,10 @@ app.controller("prescriptionController", function($scope, $http){
             prescriptionId: prescription.id,
             days: []
         });
+    };
+
+    $scope.removeEvent = function(prescription, event) {
+        prescription.metaEvents.splice(prescription.metaEvents.indexOf(event), 1);
     };
 
     $scope.toggleRemind = function(prescription) {
@@ -534,7 +576,7 @@ app.controller("settingController", function($scope, $http, $location){
 
     $scope.cancelSettings = function(){
         $location.path('/home');
-    }
+    };
 
     $scope.saved = false;
     $scope.saveAcct = function(){
