@@ -5,12 +5,12 @@
     <title></title>
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="glyphicon glyphicon-option-vertical" ></span>
                 </button>
@@ -18,7 +18,7 @@
                 <a class="navbar-brand" href="#/home">Pillstr</a>
             </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#/home" data-toggle="collapse" data-target="#hamburger">Home</a></li>
                     <li><a href="#/prescriptions" data-toggle="collapse" data-target="#hamburger">My Prescriptions</a></li>

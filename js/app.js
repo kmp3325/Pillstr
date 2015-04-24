@@ -106,12 +106,6 @@ app.controller("accountController", function($scope, $location, $http){
 app.controller("homeController", function($scope){
     sessionStorage.setItem('contrl', "homeController");
     sessionStorage.setItem('auth', true);
-});
-
-//Prescription controller
-app.controller("prescriptionController", function($scope){
-    sessionStorage.setItem('auth', true);
-
     $scope.reminders = [
         {
             "id": 0,
