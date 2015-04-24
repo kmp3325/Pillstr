@@ -1,6 +1,6 @@
 //initialize the angular app
 var app = angular.module("pillstrApp", ['ngRoute']);
-var apiBaseURL = "http://74.74.160.36:8080/";
+var apiBaseURL = "http://129.21.61.152:8080/";
 
 //configure app routes
 app.config(['$routeProvider',
@@ -107,9 +107,10 @@ app.controller("homeController", function($scope){
 //Prescription controller
 app.controller("prescriptionController", function($scope, $http){
     sessionStorage.setItem('auth', true);
+    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
     //sessionStorage.getItem('userId');
     var userId = 1;
-    var prescriptionUrl = apiBaseURL + 'prescriptions/' + userId;
+    var prescriptionUrl = apiBaseURL + 'prescriptions/-/by-userId/' + userId;
     $scope.prescriptions = [];
     $http.get(prescriptionUrl)
         .success(function(data, status, headers, config) {
@@ -235,6 +236,10 @@ app.controller("prescriptionController", function($scope, $http){
         return pad.substring(0, pad.length - str.length) + str;
     };
 
+    $scope.getTime = function(event) {
+        return $scope.padTime(event.hour) + ':' + $scope.padTime(event.minute);
+    };
+
     $scope.toggleDay = function(event, day) {
         var index = event.days.indexOf(day.val);
         if(index >= 0) {
@@ -285,13 +290,22 @@ app.controller("prescriptionController", function($scope, $http){
 
         if(prescription.isNew) {
             var data = JSON.stringify(parameters);
+            prescription.isNew = false;
 
-            $http.post(apiBaseURL + 'prescriptions/', data);
-            //$http({
-            //    url: apiBaseURL + 'prescriptions',
-            //    method: 'POST',
-            //    params: parameters
-            //});
+            //$http.post(apiBaseURL + 'prescriptions/', data)
+            //    .success(function(){
+            //        console.log("POST of new prescription successful");
+            //    })
+            //    .error(function() {
+            //        console.log("POST of new prescription unsuccessful");
+            //        console.log("POST of new prescription unsuccessful");
+            //    });
+            $http({
+                url: apiBaseURL + 'prescriptions',
+                method: 'POST',
+                params: parameters,
+                data: parameters
+            });
         }
 
         else {
@@ -299,14 +313,13 @@ app.controller("prescriptionController", function($scope, $http){
                 url: apiBaseURL + 'prescriptions/' + prescription.id,
                 method: 'PUT',
                 params: parameters
+            })
+            .success(function() {
+                console.log("PUT of prescription successful");
+            })
+            .error(function() {
+                console.log("PUT of prescription unsuccessful");
             });
-            //$http.put(apiBaseURL + 'prescriptions/' + prescription.id, {params: JSON.stringify(parameters)})
-            //    .success(function() {
-            //        console.log("PUT of prescription successful");
-            //    })
-            //    .error(function() {
-            //        console.log("PUT of prescription unsuccessful");
-            //    });
         }
     };
 
