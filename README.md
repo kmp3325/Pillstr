@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kmp3325/Pillstr.png)](https://travis-ci.org/kmp3325/Pillstr)
+[![Build Status](https://travis-ci.org/kmp3325/Pillstr.svg)](https://travis-ci.org/kmp3325/Pillstr)
 
 
 The app can be opened from index.html, but it works best if hosted on a server such as apache.
