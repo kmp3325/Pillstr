@@ -666,5 +666,3 @@ app.controller("settingController", function($scope, $http, $location){
             });
     }
 });
-
-

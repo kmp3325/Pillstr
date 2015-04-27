@@ -45,7 +45,7 @@ public class UserResource {
     }
 
     @POST
-    public int post(@QueryParam("name") String name, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("email") String email, @QueryParam("phone") int phone) {
+    public int post(@QueryParam("name") String name, @QueryParam("username") String username, @QueryParam("password") String password, @QueryParam("email") String email, @QueryParam("phone") String phone) {
         return userDAO.insert(name, username, password, email, phone);
     }
 
@@ -78,7 +78,7 @@ public class UserResource {
                     @QueryParam("email") Optional<String> email,
                     @QueryParam("password") Optional<String> password,
                     @QueryParam("username") Optional<String> username,
-                    @QueryParam("phone") Optional<Integer> phone) {
+                    @QueryParam("phone") Optional<String> phone) {
 
         if (name.isPresent()) userDAO.setName(id, name.get());
         if (email.isPresent()) userDAO.setEmail(id, email.get());
